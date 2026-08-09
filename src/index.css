@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+/* Derhami Brand tokens — shared design system token set
+   Primary brand navy #1D2EA0, white #FFFFFF, neutral #2E2F29,
+   complementary crimson #C6142A (rose-500 is remapped to it) */
+@theme {
+  --color-brand-50: #F0F3FD;
+  --color-brand-100: #E1E6FB;
+  --color-brand-200: #C3CDF5;
+  --color-brand-300: #9FADED;
+  --color-brand-400: #7284E3;
+  --color-brand-500: #4D63D5;
+  --color-brand-600: #1D2EA0;
+  --color-brand-700: #18298B;
+  --color-brand-800: #131F6D;
+  --color-brand-900: #0C144B;
+  --color-brand-950: #070B2E;
+
+  /* Bound neutral family */
+  --color-stone-50: #FFFFFF;
+  --color-stone-100: #F2F3F8;
+  --color-stone-200: #E2E4EC;
+  --color-stone-300: #C3C7D4;
+  --color-stone-400: #9AA1B1;
+  --color-stone-500: #717A8C;
+  --color-stone-600: #565B6B;
+  --color-stone-700: #42494F;
+  --color-stone-800: #33363E;
+  --color-stone-900: #2B2F29;
+  --color-stone-950: #1A1C22;
+
+  /* Complementary crimson — brand rose */
+  --color-rose-50: #FDF0F2;
+  --color-rose-100: #FBDCE0;
+  --color-rose-200: #F6C5CB;
+  --color-rose-300: #EFA1AA;
+  --color-rose-400: #E2667A;
+  --color-rose-500: #C6142A;
+  --color-rose-600: #A90E22;
+  --color-rose-700: #8C0818;
+  --color-rose-800: #6B0715;
+  --color-rose-900: #4A0510;
+  --color-rose-950: #2B0409;
+}
+
+@layer base {
+  html {
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  body {
+    font-family: 'Vazirmatn', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(113, 122, 140, 0.4);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(113, 122, 140, 0.7);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(66, 73, 79, 0.5);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(66, 73, 79, 0.8);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
