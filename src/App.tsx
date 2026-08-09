@@ -1,22 +1,17 @@
 import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { 
   ExternalLink, 
-  GitBranch, 
-  CheckSquare, 
+  Github, 
   Type,
   Palette,
   Sun,
   Moon,
-  Folder,
-  File,
-  ChevronRight,
-  Terminal,
-  Search,
-  Settings,
-  MoreHorizontal,
-  Plus,
-  Heart,
-  X
+  CheckSquare,
+  ArrowLeft,
+  Sparkles,
+  Code2,
+  Zap
 } from 'lucide-react'
 
 function App() {
@@ -28,9 +23,6 @@ function App() {
     return false
   })
 
-  const [activeTab, setActiveTab] = useState('app.tsx')
-  const [sidebarOpen, setSidebarOpen] = useState(true)
-
   useEffect(() => {
     document.documentElement.classList.toggle('dark', isDark)
     localStorage.setItem('theme', isDark ? 'dark' : 'light')
@@ -41,362 +33,279 @@ function App() {
       id: 'virastar',
       name: 'persian-virastar',
       nameFa: 'پرشین ویراستار',
-      description: 'ابزار حرفه‌ای ویرایش و نظافت متن فارسی',
-      icon: <Type className="w-5 h-5" />,
+      description: 'ابزار حرفه‌ای ویرایش و نظافت متن فارسی با قابلیت‌های هوشمند',
+      icon: <Type className="w-6 h-6" />,
       href: 'https://virastar.nounproject.ir',
       github: 'https://github.com/derhami/persian-virastar',
-      features: ['ویرایش هوشمند متن فارسی', 'اصلاح نیم‌فاصله', 'تبدیل اعداد', 'تحلیل خوانایی']
+      features: ['ویرایش هوشمند متن فارسی', 'اصلاح نیم‌فاصله', 'تبدیل اعداد', 'تحلیل خوانایی'],
+      color: 'from-violet-500/20 to-indigo-500/20',
+      accent: 'text-violet-400',
+      border: 'border-violet-500/30'
     },
     {
       id: 'checklist',
       name: 'checklist',
       nameFa: 'چک‌لیست طراحی',
-      description: 'مرجع جامع چک‌لیست‌های تخصصی UI/UX',
-      icon: <CheckSquare className="w-5 h-5" />,
+      description: 'مرجع جامع چک‌لیست‌های تخصصی UI/UX با ۲۰۰+ آیتم',
+      icon: <CheckSquare className="w-6 h-6" />,
       href: 'https://checklist.nounproject.ir',
       github: 'https://github.com/derhami/checklist',
-      features: ['بیش از ۲۰۰ آیتم تخصصی', 'نمودار راداری', 'گزارش‌گیری PDF', 'سیستم پروژه']
+      features: ['بیش از ۲۰۰ آیتم تخصصی', 'نمودار راداری', 'گزارش‌گیری PDF', 'سیستم پروژه'],
+      color: 'from-emerald-500/20 to-teal-500/20',
+      accent: 'text-emerald-400',
+      border: 'border-emerald-500/30'
     },
     {
       id: 'tailwind',
       name: 'tailwind-visualizer',
       nameFa: 'ویژوالایزر تیلویند',
-      description: 'مرجع بصری تعاملی Tailwind CSS',
-      icon: <Palette className="w-5 h-5" />,
+      description: 'مرجع بصری تعاملی Tailwind CSS برای یادگیری سریع',
+      icon: <Palette className="w-6 h-6" />,
       href: 'https://tailwind.nounproject.ir',
       github: 'https://github.com/derhami/tailwind-visualizer',
-      features: ['مقايسه بصری کلاس‌ها', 'شبیه‌ساز breakpoint', 'پالت رنگی', 'چت‌شیت']
+      features: ['مقايسه بصری کلاس‌ها', 'شبیه‌ساز breakpoint', 'پالت رنگی', 'چت‌شیت'],
+      color: 'from-cyan-500/20 to-sky-500/20',
+      accent: 'text-cyan-400',
+      border: 'border-cyan-500/30'
+    },
+    {
+      id: 'ranko',
+      name: 'ranko-seo',
+      nameFa: 'رنکو',
+      description: 'ابزار حرفه‌ای سئو و بهینه‌سازی سایت با ۲۵۱ قاعده در ۲۰ دسته',
+      icon: <Zap className="w-6 h-6" />,
+      href: 'https://ranko.nounproject.ir',
+      github: 'https://github.com/derhami/ranko',
+      features: ['۲۵۱ قاعده سئو', 'Core Web Vitals', 'تحلیل امنیتی', 'گزارش حرفه‌ای'],
+      color: 'from-amber-500/20 to-orange-500/20',
+      accent: 'text-amber-400',
+      border: 'border-amber-500/30'
     }
   ]
 
   const [selectedProject, setSelectedProject] = useState(projects[0])
 
   return (
-    <div className="min-h-screen bg-app transition-colors duration-150">
-      {/* Top Bar - VS Code Style */}
-      <div className="bg-sub border-b main-border px-2 py-1 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 px-2">
-            <div className="w-3 h-3 rounded-full bg-rose-500" />
-            <div className="w-3 h-3 rounded-full bg-amber-400" />
-            <div className="w-3 h-3 rounded-full bg-emerald-500" />
-          </div>
-          <div className="flex items-center gap-1 px-3 py-1 rounded bg-card main-border main-text text-xs">
-            <Folder className="w-3.5 h-3.5" />
-            <span>lab.derhami</span>
-          </div>
-        </div>
-        
-        <div className="flex items-center gap-1">
-          <button className="p-1.5 rounded hover-bg transition-colors main-text">
-            <Search className="w-4 h-4" />
-          </button>
-          <button className="p-1.5 rounded hover-bg transition-colors main-text">
-            <Settings className="w-4 h-4" />
-          </button>
-          <button 
-            onClick={() => setIsDark(!isDark)}
-            className="p-1.5 rounded hover-bg transition-colors main-text"
-          >
-            {isDark ? <Sun className="w-4 h-4 accent-text" /> : <Moon className="w-4 h-4 main-text" />}
-          </button>
-        </div>
-      </div>
-
-      <div className="flex h-[calc(100vh-37px)]">
-        {/* Sidebar */}
-        <div className={`${sidebarOpen ? 'w-64' : 'w-12'} bg-card border-l main-border flex flex-col transition-all duration-300`}>
-          {sidebarOpen && (
-            <>
-              <div className="px-3 py-2 text-xs font-semibold muted-text uppercase tracking-wider border-b main-border">
-                پروژه‌ها
-              </div>
-              <div className="flex-1 overflow-y-auto py-1">
-                {projects.map((project) => (
-                  <button
-                    key={project.id}
-                    onClick={() => setSelectedProject(project)}
-                    className={`w-full px-3 py-2 flex items-center gap-2 text-right transition-colors ${
-                      selectedProject.id === project.id
-                        ? 'bg-accent-light-bg accent-text'
-                        : 'hover-bg main-text'
-                    }`}
-                  >
-                    <ChevronRight className="w-3 h-3 shrink-0" />
-                    <span className="text-xs truncate">
-                      {project.nameFa}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </>
-          )}
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-3 hover-bg transition-colors border-t main-border main-text"
-          >
-            <MoreHorizontal className="w-4 h-4" />
-          </button>
-        </div>
-
-        {/* Main Editor */}
-        <div className="flex-1 flex flex-col min-w-0">
-          {/* Tabs */}
-          <div className="bg-card border-b main-border flex items-center">
-            <div className="flex">
-              {['app.tsx', 'projects.ts', 'styles.css'].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`px-4 py-2 text-xs font-mono flex items-center gap-2 border-r main-border ${
-                    activeTab === tab
-                      ? 'bg-app main-text border-b-2 border-b-accent-main'
-                      : 'bg-card sub-text hover-bg'
-                  } transition-colors`}
-                >
-                  <File className="w-3.5 h-3.5" />
-                  {tab}
-                </button>
-              ))}
+    <div className="min-h-screen bg-[#0f1117] text-white">
+      {/* Header */}
+      <motion.header 
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="fixed top-0 left-0 right-0 z-50 bg-[#0f1117]/80 backdrop-blur-xl border-b border-white/5"
+      >
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1d2ea0] to-[#7b8fe8] flex items-center justify-center font-bold text-lg">
+              L
             </div>
-          </div>
-
-          {/* Code Editor */}
-          <div className="flex-1 overflow-auto bg-app p-4">
-            {activeTab === 'app.tsx' ? (
-              <div className="font-mono text-xs leading-6 sub-text">
-                <div>
-                  <span className="text-brand-400">import</span>
-                  {' { '}
-                  <span className="text-emerald-400">useState</span>
-                  {' } '}
-                  <span className="text-brand-400">from</span>
-                  {' '}
-                  <span className="text-amber-300">'react'</span>
-                </div>
-                
-                <div className="my-4" />
-                
-                <div>
-                  <span className="text-brand-400">function</span>
-                  {' '}
-                  <span className="text-brand-300">Lab</span>
-                  {'() {'}
-                </div>
-                
-                <div className="pl-4">
-                  <div>
-                    <span className="text-brand-400">const</span>
-                    {' [project, setProject] = '}
-                    <span className="text-brand-400">useState</span>
-                    {'('}
-                    <span className="text-amber-300">'virastar'</span>
-                    {')'}
-                  </div>
-                  
-                  <div className="my-2" />
-                  
-                  <div className="text-stone-500 italic">
-                    {'// لابراتوار پروژه‌های درهمی'}
-                  </div>
-                  <div className="text-stone-500 italic">
-                    {'// مجموعه ابزارهای حرفه‌ای وب فارسی'}
-                  </div>
-                  
-                  <div className="my-2" />
-                  
-                  <div>
-                    <span className="text-brand-400">return</span>
-                    {' ('}
-                  </div>
-                  
-                  <div className="pl-4">
-                    <div className="text-stone-400">
-                      &lt;<span className="text-brand-400">div</span> <span className="text-rose-300">className</span>=<span className="text-amber-300">"lab-container"</span>&gt;
-                    </div>
-                    <div className="pl-4">
-                      <div className="text-stone-400">&lt;<span className="text-brand-400">Header</span> /&gt;</div>
-                      <div className="text-stone-400">&lt;<span className="text-brand-400">ProjectCard</span> <span className="text-rose-300">project</span>=<span className="text-stone-400">{'{'}</span>project<span className="text-stone-400">{'}'}</span> /&gt;</div>
-                      <div className="text-stone-400">&lt;<span className="text-brand-400">Features</span> <span className="text-rose-300">items</span>=<span className="text-stone-400">{'{'}</span>project.features<span className="text-stone-400">{'}'}</span> /&gt;</div>
-                    </div>
-                    <div className="text-stone-400">&lt;/<span className="text-brand-400">div</span>&gt;</div>
-                  </div>
-                  
-                  <div>{')'}</div>
-                </div>
-                
-                <div>{'}'}</div>
-              </div>
-            ) : activeTab === 'projects.ts' ? (
-              <div className="font-mono text-xs leading-6 sub-text">
-                <div>
-                  <span className="text-brand-400">export</span>
-                  {' '}
-                  <span className="text-brand-400">const</span>
-                  {' '}
-                  <span className="text-emerald-400">projects</span>
-                  {' = ['}
-                </div>
-                
-                {projects.map((project, index) => (
-                  <div key={project.id} className="pl-4">
-                    <div>{'  {'}</div>
-                    <div className="pl-4">
-                      <div><span className="text-rose-300">id</span><span className="text-stone-400">: </span><span className="text-amber-300">'{project.id}'</span></div>
-                      <div><span className="text-rose-300">name</span><span className="text-stone-400">: </span><span className="text-amber-300">'{project.nameFa}'</span></div>
-                      <div><span className="text-rose-300">url</span><span className="text-stone-400">: </span><span className="text-amber-300">'{project.href}'</span></div>
-                    </div>
-                    <div>{'  }'}</div>
-                    {index < projects.length - 1 && <div>,</div>}
-                  </div>
-                ))}
-                
-                <div>{']'}</div>
-              </div>
-            ) : (
-              <div className="font-mono text-xs leading-6 sub-text">
-                <div>
-                  <span className="text-brand-400">@import</span>
-                  {' '}
-                  <span className="text-amber-300">"tailwindcss"</span>
-                  {';'}
-                </div>
-                
-                <div className="my-4" />
-                
-                <div>
-                  <span className="text-brand-400">@font-face</span>
-                  {' {'}
-                </div>
-                <div className="pl-4">
-                  <div><span className="text-rose-300">font-family</span><span className="text-stone-400">: </span><span className="text-amber-300">'IRANYekanX'</span><span className="text-stone-400">;</span></div>
-                  <div><span className="text-rose-300">src</span><span className="text-stone-400">: </span><span className="text-amber-300">url('/fonts/IRANYekanXVF.woff2')</span><span className="text-stone-400">;</span></div>
-                </div>
-                <div>{'}'}</div>
-                
-                <div className="my-4" />
-                
-                <div className="text-stone-500 italic">{'/* Derhami Design System */'}</div>
-                <div>
-                  <span className="text-brand-400">@theme</span>
-                  {' {'}
-                </div>
-                <div className="pl-4">
-                  <div><span className="text-rose-300">--color-brand</span><span className="text-stone-400">: </span><span className="text-emerald-400">#1D2EA0</span><span className="text-stone-400">;</span></div>
-                </div>
-                <div>{'}'}</div>
-              </div>
-            )}
-          </div>
-
-          {/* Terminal */}
-          <div className="bg-card border-t main-border h-32 overflow-auto">
-            <div className="px-4 py-2 bg-sub border-b main-border flex items-center justify-between">
-              <div className="flex items-center gap-2 main-text">
-                <Terminal className="w-3.5 h-3.5" />
-                <span className="text-xs font-semibold">Terminal</span>
-              </div>
-              <button className="p-1 rounded hover-bg">
-                <Plus className="w-3.5 h-3.5 main-text" />
-              </button>
-            </div>
-            <div className="p-4 font-mono text-xs">
-              <div>
-                <span className="text-brand-400">$</span>
-                {' npm run build'}
-              </div>
-              <div className="text-emerald-400">
-                {'✓ Built in 2.34s'}
-              </div>
-              <div>
-                <span className="text-brand-400">$</span>
-                {' npm run deploy'}
-              </div>
-              <div className="text-brand-300">
-                {'🚀 Deployed to https://nounproject.ir'}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Panel */}
-        <div className="w-80 bg-card border-l main-border flex flex-col hidden lg:flex">
-          <div className="px-4 py-3 bg-card border-b main-border">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold main-text">جزئیات پروژه</span>
-              <button className="p-1 rounded hover-bg">
-                <X className="w-3.5 h-3.5 main-text" />
-              </button>
+            <div>
+              <h1 className="font-bold text-lg">لابراتوار درهمی</h1>
+              <p className="text-xs text-gray-400">Derhami Lab</p>
             </div>
           </div>
           
-          <div className="flex-1 overflow-y-auto p-4">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 rounded-lg bg-sub accent-text">
-                {selectedProject.icon}
-              </div>
-              <div>
-                <h3 className="font-bold main-text">
-                  {selectedProject.nameFa}
-                </h3>
-                <p className="text-xs muted-text">
-                  {selectedProject.name}
-                </p>
-              </div>
-            </div>
-            
-            <p className="text-xs mb-4 sub-text">
-              {selectedProject.description}
+          <div className="flex items-center gap-4">
+            <a 
+              href="https://derhami.com" 
+              target="_blank"
+              className="text-sm text-gray-400 hover:text-white transition-colors"
+            >
+              وبسایت شخصی
+            </a>
+            <button
+              onClick={() => setIsDark(!isDark)}
+              className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+            >
+              {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+          </div>
+        </div>
+      </motion.header>
+
+      {/* Hero */}
+      <section className="pt-32 pb-20 px-6">
+        <div className="max-w-7xl mx-auto text-center">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-gray-300 mb-8"
+          >
+            <Sparkles className="w-4 h-4 text-amber-400" />
+            مجموعه ابزارهای حرفه‌ای وب فارسی
+          </motion.div>
+          
+          <motion.h2
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-l from-white via-gray-200 to-gray-400 bg-clip-text text-transparent"
+          >
+            لابراتوار پروژه‌های درهمی
+          </motion.h2>
+          
+          <motion.p
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="text-xl text-gray-400 max-w-2xl mx-auto mb-12"
+          >
+            مجموعه‌ای از ابزارهای متن‌باز و رایگان برای توسعه‌دهندگان وب فارسی
+          </motion.p>
+
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="flex items-center justify-center gap-4"
+          >
+            <a
+              href="https://github.com/derhami"
+              target="_blank"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-black font-semibold hover:bg-gray-200 transition-colors"
+            >
+              <Github className="w-5 h-5" />
+              مشاهده در گیت‌هاب
+            </a>
+            <a
+              href="#projects"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 border border-white/10 font-semibold hover:bg-white/10 transition-colors"
+            >
+              <Code2 className="w-5 h-5" />
+              مشاهده پروژه‌ها
+            </a>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section className="py-16 px-6 border-y border-white/5">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { value: '۴+', label: 'پروژه فعال' },
+              { value: '۱۰۰٪', label: 'متن‌باز' },
+              { value: 'فارسی', label: 'طراحی شده' },
+              { value: 'رایگان', label: 'برای همه' }
+            ].map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
+                className="text-center"
+              >
+                <div className="text-3xl font-black text-white mb-2">{stat.value}</div>
+                <div className="text-sm text-gray-400">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Projects */}
+      <section id="projects" className="py-20 px-6">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h3 className="text-3xl font-bold mb-4">پروژه‌ها</h3>
+            <p className="text-gray-400">ابزارهای حرفه‌ای برای توسعه وب فارسی</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {projects.map((project, i) => (
+              <motion.div
+                key={project.id}
+                initial={{ y: 30, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                onHoverStart={() => setSelectedProject(project)}
+                className={`group relative p-6 rounded-2xl bg-gradient-to-br ${project.color} border ${project.border} backdrop-blur-sm hover:scale-[1.02] transition-all duration-300`}
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div className={`p-3 rounded-xl bg-white/10 ${project.accent}`}>
+                    {project.icon}
+                  </div>
+                  <div className="flex gap-2">
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
+                    >
+                      <Github className="w-4 h-4" />
+                    </a>
+                    <a
+                      href={project.href}
+                      target="_blank"
+                      className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  </div>
+                </div>
+                
+                <h4 className="text-xl font-bold mb-2">{project.nameFa}</h4>
+                <p className="text-sm text-gray-300 mb-4">{project.description}</p>
+                
+                <ul className="space-y-2">
+                  {project.features.map((feature, j) => (
+                    <li key={j} className="flex items-center gap-2 text-sm text-gray-300">
+                      <div className={`w-1.5 h-1.5 rounded-full ${project.accent.replace('text-', 'bg-')}`} />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* About */}
+      <section className="py-20 px-6 bg-white/[0.02]">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            <h3 className="text-3xl font-bold mb-6">درباره لابراتوار</h3>
+            <p className="text-gray-400 text-lg leading-relaxed mb-8">
+              لابراتوار پروژه‌های درهمی مجموعه‌ای از ابزارهای متن‌باز و رایگان است که با هدف 
+              بهبود تجربه توسعه وب فارسی طراحی شده‌اند. تمامی پروژه‌ها با عشق و دقت ساخته شده‌اند 
+              و برای استفاده عموم رایگان هستند.
             </p>
-            
-            <div className="mb-4">
-              <h4 className="text-xs font-semibold mb-2 main-text">
-                امکانات
-              </h4>
-              <ul className="space-y-1">
-                {selectedProject.features.map((feature, index) => (
-                  <li key={index} className="text-xs sub-text flex items-center gap-2">
-                    <CheckSquare className="w-3 h-3 text-emerald-400" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            
-            <div className="flex gap-2">
+            <div className="flex items-center justify-center gap-6">
               <a
-                href={selectedProject.href}
+                href="https://derhami.com"
                 target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded bg-accent-bg text-white text-xs font-bold hover:bg-accent-hover transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#1d2ea0] text-white font-semibold hover:bg-[#18298b] transition-colors"
               >
-                <ExternalLink className="w-3.5 h-3.5" />
-                مشاهده
-              </a>
-              <a
-                href={selectedProject.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded bg-sub hover-bg sub-text text-xs font-medium transition-colors main-border"
-              >
-                <GitBranch className="w-3.5 h-3.5" />
-                کد
+                <ArrowLeft className="w-5 h-5" />
+                مشاهده وبسایت شخصی
               </a>
             </div>
-          </div>
-          
-          <div className="px-4 py-3 bg-card border-t main-border">
-            <div className="flex items-center justify-between">
-              <span className="text-xs muted-text">
-                لابراتوار درهمی © {new Date().getFullYear()}
-              </span>
-              <div className="flex items-center gap-1">
-                <Heart className="w-3 h-3 text-rose-500" />
-              </div>
-            </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-8 px-6 border-t border-white/5">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-gray-500">
+            لابراتوار پروژه‌های درهمی © {new Date().getFullYear()}
+          </p>
+          <p className="text-sm text-gray-500">
+            ساخته شده با ♥ توسط <a href="https://derhami.com" className="text-[#7b8fe8] hover:underline">حمیدرضا درهمی</a>
+          </p>
+        </div>
+      </footer>
     </div>
   )
 }
