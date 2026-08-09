@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, type Variants } from 'framer-motion'
 import {
-  ExternalLink,
   Type,
   Palette,
   Sun,
@@ -96,7 +95,7 @@ const projects: Project[] = [
     icon: <Palette className="w-6 h-6" />,
     href: 'https://tailwind.nounproject.ir',
     github: 'https://github.com/derhami/tailwind-visualizer',
-    features: ['مقایسه بصری کلاس‌ها', 'شبیه‌ساز breakpoint', 'پالت رنگی', 'چت‌شیت'],
+    features: ['مقایسه بصری', 'شبیه‌ساز breakpoint', 'پالت رنگی', 'چت‌شیت'],
     accentText: 'text-sky-600 dark:text-sky-400',
     accentSoft: 'bg-sky-100 dark:bg-sky-500/10',
     accentSolid: 'bg-sky-500',
@@ -104,6 +103,23 @@ const projects: Project[] = [
     glow: 'hover:shadow-[0_0_50px_-12px_rgba(14,165,233,0.5)]'
   }
 ]
+
+const container: Variants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.07, delayChildren: 0.1 }
+  }
+}
+
+const item: Variants = {
+  hidden: { opacity: 0, y: 24, scale: 0.98 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] }
+  }
+}
 
 function App() {
   const [isDark, setIsDark] = useState(() => {
@@ -114,9 +130,6 @@ function App() {
     }
     return false
   })
-
-  const { scrollYProgress } = useScroll()
-  const bgOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0])
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', isDark)
@@ -131,24 +144,27 @@ function App() {
   return (
     <div className="min-h-screen bg-canvas text-ink transition-colors relative overflow-hidden">
       {/* Ambient background */}
-      <motion.div style={{ opacity: bgOpacity }} className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent/15 rounded-full blur-[128px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brand/10 rounded-full blur-[128px]" />
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-[32rem] h-[32rem] bg-accent/15 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-[32rem] h-[32rem] bg-brand/10 rounded-full blur-[120px]" />
         <div className="absolute inset-0 bg-grid opacity-60" />
-      </motion.div>
+      </div>
 
-      {/* Bento Grid */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[minmax(200px,1fr)]">
-
-          {/* Brand tile — spans 2 rows */}
+      {/* Centered Bento Grid */}
+      <div className="relative z-10 min-h-screen flex items-center justify-center py-8 sm:py-12">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="w-full max-w-6xl px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 lg:auto-rows-[minmax(200px,auto)]"
+        >
+          {/* Brand — large left */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="relative lg:row-span-2 group flex flex-col p-7 rounded-3xl bg-card border border-line overflow-hidden transition-all duration-300 hover:border-line-strong"
+            variants={item}
+            className="relative sm:col-span-2 lg:col-span-4 lg:row-span-2 group flex flex-col p-7 rounded-[2rem] bg-card border border-line overflow-hidden transition-all duration-300 hover:border-line-strong hover:shadow-[var(--shadow-card)]"
           >
-            <div className="absolute -top-20 -right-20 w-56 h-56 rounded-full bg-accent/10 blur-3xl" />
+            <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-accent/10 blur-3xl" />
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-l from-accent to-[#7284E3] dark:to-[#a3b5f5]" />
 
             <div className="relative flex items-center justify-between mb-8">
               <div className="flex items-center gap-3">
@@ -173,41 +189,41 @@ function App() {
             </div>
 
             <div className="relative">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-soft text-accent text-xs font-bold mb-5">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-soft text-accent text-xs font-bold mb-4">
                 <Sparkles className="w-3.5 h-3.5" />
                 مجموعه ابزارهای حرفه‌ای وب فارسی
               </div>
-              <h1 className="text-3xl sm:text-4xl xl:text-5xl font-black tracking-tighter leading-[1.15] mb-5">
+              <h1 className="text-3xl sm:text-4xl xl:text-[2.75rem] font-black tracking-tighter leading-[1.2] mb-4">
                 <span className="block bg-gradient-to-l from-ink via-ink-soft to-ink-faint bg-clip-text text-transparent">
-                  لابراتوار
+                  لابراتوار پروژه‌های
                 </span>
                 <span className="block bg-gradient-to-l from-accent to-[#7284E3] dark:to-[#a3b5f5] bg-clip-text text-transparent">
-                  پروژه‌های درهمی
+                  درهمی
                 </span>
               </h1>
-              <p className="text-ink-soft text-sm leading-relaxed mb-6">
+              <p className="text-ink-soft text-sm leading-relaxed max-w-md">
                 محصولات متن‌باز و رایگان تیم دیجیتال درهمی برای توسعه‌دهندگان وب فارسی.
               </p>
             </div>
 
-            <div className="relative mt-auto">
-              <div className="grid grid-cols-2 gap-2.5 mb-5">
+            <div className="relative mt-auto pt-6">
+              <div className="grid grid-cols-4 gap-2.5 mb-5">
                 {[
-                  { v: '۴+', l: 'پروژه فعال' },
-                  { v: '۲۵۱+', l: 'قاعده سئو' },
+                  { v: '۴+', l: 'پروژه' },
+                  { v: '۲۵۱+', l: 'قاعده' },
                   { v: '۱۰۰٪', l: 'متن‌باز' },
                   { v: '۰', l: 'تومان' }
                 ].map((s) => (
-                  <div key={s.l} className="px-3 py-3 rounded-2xl bg-card-2 border border-line">
-                    <div className="text-xl font-black tracking-tight">{s.v}</div>
-                    <div className="text-[11px] text-ink-faint mt-0.5">{s.l}</div>
+                  <div key={s.l} className="px-2.5 py-3 rounded-2xl bg-card-2 border border-line text-center">
+                    <div className="text-lg font-black tracking-tight">{s.v}</div>
+                    <div className="text-[10px] text-ink-faint mt-0.5">{s.l}</div>
                   </div>
                 ))}
               </div>
               <a
                 href="https://derhami.com"
                 target="_blank"
-                className="group inline-flex w-full items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-brand text-white font-bold text-sm hover:bg-brand-hover transition-all duration-300 hover:shadow-[0_0_40px_var(--accent-glow)]"
+                className="group inline-flex w-full items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-brand text-white font-bold text-sm hover:bg-brand-hover transition-all duration-300 hover:shadow-[0_0_40px_var(--accent-glow)]"
               >
                 <Rocket className="w-4 h-4" />
                 وبسایت دیجیتال مارکتینگ درهمی
@@ -216,49 +232,43 @@ function App() {
             </div>
           </motion.div>
 
-          {/* Ranko — featured */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-          >
+          {/* Ranko — featured, tall right */}
+          <motion.div variants={item} className="relative sm:col-span-2 lg:col-span-2 lg:row-span-2">
             <a
               href={ranko.href}
               target="_blank"
-              className={`relative group flex flex-col h-full p-7 rounded-3xl bg-card border border-line overflow-hidden transition-all duration-300 ${ranko.borderHover} ${ranko.glow}`}
+              className={`relative group flex flex-col h-full p-6 rounded-[2rem] bg-card border border-line overflow-hidden transition-all duration-300 ${ranko.borderHover} ${ranko.glow}`}
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${ranko.accentSoft} opacity-50 group-hover:opacity-100 transition-opacity duration-500`} />
+              <div className={`absolute inset-0 bg-gradient-to-br ${ranko.accentSoft} opacity-60 group-hover:opacity-100 transition-opacity duration-500`} />
 
               <div className="relative flex items-start justify-between mb-5">
                 <div className={`inline-flex items-center justify-center w-12 h-12 rounded-2xl ${ranko.accentSoft} ${ranko.accentText}`}>
                   {ranko.icon}
                 </div>
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-accent text-white">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-accent text-white">
                   <Sparkles className="w-3 h-3" />
                   ویژه
-                </div>
+                </span>
               </div>
 
               <h4 className="relative text-xl font-bold mb-1.5">{ranko.nameFa}</h4>
-              <p className="relative text-sm leading-relaxed mb-auto text-ink-soft">
-                {ranko.description}
-              </p>
+              <p className="relative text-sm leading-relaxed text-ink-soft">{ranko.description}</p>
 
-              <div className="relative grid grid-cols-3 gap-2.5 mt-5">
+              <div className="relative grid grid-cols-3 gap-2 mt-5">
                 {[
                   { icon: <Gauge className="w-4 h-4" />, v: '۲۵۱', l: 'قاعده' },
                   { icon: <ShieldCheck className="w-4 h-4" />, v: '۲۰', l: 'دسته' },
                   { icon: <Languages className="w-4 h-4" />, v: '۵', l: 'خروجی' }
                 ].map((s) => (
-                  <div key={s.l} className="p-2.5 rounded-xl bg-card/70 border border-line text-center">
+                  <div key={s.l} className="px-2 py-2.5 rounded-xl bg-card/70 border border-line text-center">
                     <div className={`inline-flex ${ranko.accentText} mb-1`}>{s.icon}</div>
-                    <div className="text-base font-black leading-none">{s.v}</div>
-                    <div className="text-[10px] text-ink-faint mt-1">{s.l}</div>
+                    <div className="text-sm font-black leading-none">{s.v}</div>
+                    <div className="text-[10px] text-ink-faint mt-0.5">{s.l}</div>
                   </div>
                 ))}
               </div>
 
-              <div className="relative flex items-center justify-between pt-4 mt-4 border-t border-line">
+              <div className="relative flex items-center justify-between pt-4 mt-auto border-t border-line">
                 <span className={`inline-flex items-center gap-1.5 text-xs font-bold ${ranko.accentText}`}>
                   مشاهده پروژه
                   <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -277,14 +287,12 @@ function App() {
 
           {/* Virastar */}
           <motion.a
+            variants={item}
             href={virastar.href}
             target="_blank"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.25 }}
-            className={`relative group flex flex-col p-6 rounded-3xl bg-card border border-line overflow-hidden transition-all duration-300 ${virastar.borderHover} ${virastar.glow}`}
+            className={`relative group flex flex-col p-6 rounded-[2rem] bg-card border border-line overflow-hidden transition-all duration-300 ${virastar.borderHover} ${virastar.glow}`}
           >
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-5">
               <div className={`inline-flex items-center justify-center w-11 h-11 rounded-2xl ${virastar.accentSoft} ${virastar.accentText}`}>
                 {virastar.icon}
               </div>
@@ -298,8 +306,8 @@ function App() {
               </a>
             </div>
             <h4 className="text-base font-bold mb-1">{virastar.nameFa}</h4>
-            <p className="text-ink-soft text-[13px] leading-relaxed mb-auto">{virastar.description}</p>
-            <div className="flex flex-wrap gap-1.5 mt-4">
+            <p className="text-ink-soft text-[13px] leading-relaxed mb-4">{virastar.description}</p>
+            <div className="flex flex-wrap gap-1.5 mt-auto">
               {virastar.features.map((f) => (
                 <span key={f} className="px-2 py-1 rounded-md bg-card-2 border border-line text-[11px] text-ink-faint">
                   {f}
@@ -310,14 +318,12 @@ function App() {
 
           {/* Checklist */}
           <motion.a
+            variants={item}
             href={checklist.href}
             target="_blank"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.35 }}
-            className={`relative group flex flex-col p-6 rounded-3xl bg-card border border-line overflow-hidden transition-all duration-300 ${checklist.borderHover} ${checklist.glow}`}
+            className={`relative group flex flex-col p-6 rounded-[2rem] bg-card border border-line overflow-hidden transition-all duration-300 ${checklist.borderHover} ${checklist.glow}`}
           >
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-5">
               <div className={`inline-flex items-center justify-center w-11 h-11 rounded-2xl ${checklist.accentSoft} ${checklist.accentText}`}>
                 {checklist.icon}
               </div>
@@ -331,8 +337,8 @@ function App() {
               </a>
             </div>
             <h4 className="text-base font-bold mb-1">{checklist.nameFa}</h4>
-            <p className="text-ink-soft text-[13px] leading-relaxed mb-auto">{checklist.description}</p>
-            <div className="flex flex-wrap gap-1.5 mt-4">
+            <p className="text-ink-soft text-[13px] leading-relaxed mb-4">{checklist.description}</p>
+            <div className="flex flex-wrap gap-1.5 mt-auto">
               {checklist.features.map((f) => (
                 <span key={f} className="px-2 py-1 rounded-md bg-card-2 border border-line text-[11px] text-ink-faint">
                   {f}
@@ -341,87 +347,81 @@ function App() {
             </div>
           </motion.a>
 
-          {/* Tailwind — wide */}
+          {/* Tailwind */}
           <motion.a
+            variants={item}
             href={tailwind.href}
             target="_blank"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className={`sm:col-span-2 relative group flex items-center gap-5 p-7 rounded-3xl bg-card border border-line overflow-hidden transition-all duration-300 ${tailwind.borderHover} ${tailwind.glow}`}
+            className={`relative group flex flex-col p-6 rounded-[2rem] bg-card border border-line overflow-hidden transition-all duration-300 ${tailwind.borderHover} ${tailwind.glow}`}
           >
-            <div className={`inline-flex items-center justify-center w-14 h-14 shrink-0 rounded-2xl ${tailwind.accentSoft} ${tailwind.accentText}`}>
-              {tailwind.icon}
-            </div>
-            <div className="flex-1 min-w-0">
-              <h4 className="text-base font-bold mb-1 flex items-center gap-2">
-                {tailwind.nameFa}
-                <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </h4>
-              <p className="text-ink-soft text-[13px] leading-relaxed mb-2.5">{tailwind.description}</p>
-              <div className="flex flex-wrap gap-1.5">
-                {tailwind.features.map((f) => (
-                  <span key={f} className="px-2 py-1 rounded-md bg-card-2 border border-line text-[11px] text-ink-faint">
-                    {f}
-                  </span>
-                ))}
+            <div className="flex items-center justify-between mb-5">
+              <div className={`inline-flex items-center justify-center w-11 h-11 rounded-2xl ${tailwind.accentSoft} ${tailwind.accentText}`}>
+                {tailwind.icon}
               </div>
+              <a
+                href={tailwind.github}
+                target="_blank"
+                onClick={(e) => e.stopPropagation()}
+                className="p-2 rounded-lg bg-card-2 border border-line text-ink-soft hover:text-ink transition-all duration-200 hover:scale-105"
+              >
+                <GithubIcon className="w-4 h-4" />
+              </a>
             </div>
-            <a
-              href={tailwind.github}
-              target="_blank"
-              onClick={(e) => e.stopPropagation()}
-              className="shrink-0 p-2.5 rounded-xl bg-card-2 border border-line text-ink-soft hover:text-ink transition-all duration-200 hover:scale-105"
-            >
-              <GithubIcon className="w-4 h-4" />
-            </a>
+            <h4 className="text-base font-bold mb-1">{tailwind.nameFa}</h4>
+            <p className="text-ink-soft text-[13px] leading-relaxed mb-4">{tailwind.description}</p>
+            <div className="flex flex-wrap gap-1.5 mt-auto">
+              {tailwind.features.map((f) => (
+                <span key={f} className="px-2 py-1 rounded-md bg-card-2 border border-line text-[11px] text-ink-faint">
+                  {f}
+                </span>
+              ))}
+            </div>
           </motion.a>
 
-          {/* About tile */}
+          {/* About */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative group flex flex-col p-6 rounded-3xl bg-card border border-line overflow-hidden transition-all duration-300 hover:border-line-strong"
+            variants={item}
+            className="relative sm:col-span-1 lg:col-span-3 group flex flex-col p-6 rounded-[2rem] bg-card border border-line overflow-hidden transition-all duration-300 hover:border-line-strong"
           >
-            <div className="inline-flex items-center justify-center w-11 h-11 rounded-2xl bg-accent-soft text-accent mb-4">
-              <Braces className="w-5 h-5" />
+            <div className="flex items-center gap-3 mb-4">
+              <div className="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-accent-soft text-accent">
+                <Braces className="w-5 h-5" />
+              </div>
+              <h4 className="text-base font-bold">چرا متن‌باز؟</h4>
             </div>
-            <h4 className="text-base font-bold mb-2">چرا متن‌باز؟</h4>
-            <p className="text-ink-soft text-[13px] leading-relaxed mb-auto">
-              لابراتوار درهمی محصولات خود را متن‌باز و رایگان انتشار می‌دهد تا ابزارهای
-              خوب در دسترس همه‌ی توسعه‌دهندگان وب فارسی باشند.
+            <p className="text-ink-soft text-[13px] leading-relaxed mb-4">
+              لابراتوار درهمی محصولات خود را متن‌باز و رایگان انتشار می‌دهد تا ابزارهای خوب
+              در دسترس همه‌ی توسعه‌دهندگان وب فارسی باشند.
             </p>
-            <div className="flex items-center gap-2 mt-4 pt-4 border-t border-line">
+            <div className="flex items-center gap-2 mt-auto pt-4 border-t border-line">
               <Heart className="w-3.5 h-3.5 text-accent" />
               <span className="text-[11px] text-ink-faint">ساخته شده توسط تیم درهمی</span>
             </div>
           </motion.div>
 
-          {/* GitHub CTA tile */}
+          {/* GitHub CTA */}
           <motion.a
+            variants={item}
             href="https://github.com/derhami"
             target="_blank"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="relative group flex flex-col items-center justify-center p-6 rounded-3xl bg-gradient-to-br from-brand to-accent text-white overflow-hidden transition-all duration-300 hover:shadow-[0_0_50px_var(--accent-glow)]"
+            className="relative sm:col-span-1 lg:col-span-3 group flex items-center justify-between gap-4 p-6 rounded-[2rem] bg-gradient-to-br from-brand to-accent text-white overflow-hidden transition-all duration-300 hover:shadow-[0_0_50px_var(--accent-glow)]"
           >
             <div className="absolute inset-0 bg-grid opacity-30" />
-            <div className="relative inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-sm mb-4 transition-transform duration-300 group-hover:scale-110">
-              <GithubIcon className="w-7 h-7" />
+            <div className="relative flex items-center gap-3">
+              <div className="inline-flex items-center justify-center w-11 h-11 rounded-2xl bg-white/15 backdrop-blur-sm transition-transform duration-300 group-hover:scale-110">
+                <GithubIcon className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="font-bold text-base mb-0.5">کد منبع</div>
+                <div className="text-[12px] text-white/70">همه‌ی پروژه‌ها روی گیت‌هاب</div>
+              </div>
             </div>
-            <div className="relative font-bold text-base mb-1">کد منبع</div>
-            <div className="relative text-[12px] text-white/70 mb-4">همه‌ی پروژه‌ها روی گیت‌هاب</div>
-            <div className="relative inline-flex items-center gap-1.5 text-[12px] font-bold bg-white text-black px-4 py-2 rounded-full group-hover:gap-2.5 transition-all duration-300">
+            <span className="relative inline-flex items-center gap-1.5 text-[12px] font-bold bg-white text-black px-3.5 py-2 rounded-full group-hover:gap-2.5 transition-all duration-300">
               <Terminal className="w-3.5 h-3.5" />
               github.com/derhami
-            </div>
+            </span>
           </motion.a>
-        </div>
+        </motion.div>
       </div>
     </div>
   )
