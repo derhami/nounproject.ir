@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { 
-  ExternalLink, 
+import {
+  ExternalLink,
   Type,
   Palette,
   Sun,
@@ -11,7 +11,10 @@ import {
   Code2,
   Zap,
   ChevronDown,
-  ArrowUpRight
+  ArrowUpRight,
+  ShieldCheck,
+  Gauge,
+  Languages
 } from 'lucide-react'
 
 const GithubIcon = ({ className }: { className?: string }) => (
@@ -20,25 +23,42 @@ const GithubIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
+type Project = {
+  id: string
+  name: string
+  nameFa: string
+  description: string
+  icon: React.ReactNode
+  href: string
+  github: string
+  features: string[]
+  accentText: string
+  accentSoft: string
+  accentSolid: string
+  borderHover: string
+  glow: string
+}
+
 function App() {
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('theme') === 'dark' || 
-        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      const stored = localStorage.getItem('theme')
+      if (stored) return stored === 'dark'
+      return window.matchMedia('(prefers-color-scheme: dark)').matches
     }
     return false
   })
 
   const { scrollYProgress } = useScroll()
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
-  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.95])
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
+  const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 0.96])
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', isDark)
     localStorage.setItem('theme', isDark ? 'dark' : 'light')
   }, [isDark])
 
-  const projects = [
+  const projects: Project[] = [
     {
       id: 'virastar',
       name: 'persian-virastar',
@@ -48,10 +68,11 @@ function App() {
       href: 'https://virastar.nounproject.ir',
       github: 'https://github.com/derhami/persian-virastar',
       features: ['ویرایش هوشمند متن فارسی', 'اصلاح نیم‌فاصله', 'تبدیل اعداد', 'تحلیل خوانایی'],
-      gradient: 'from-violet-500/20 via-indigo-500/20 to-purple-500/20',
-      accent: 'bg-violet-500',
-      text: 'text-violet-400',
-      border: 'border-violet-500/20 hover:border-violet-500/40'
+      accentText: 'text-violet-600 dark:text-violet-400',
+      accentSoft: 'bg-violet-100 dark:bg-violet-500/10',
+      accentSolid: 'bg-violet-500',
+      borderHover: 'hover:border-violet-400 dark:hover:border-violet-500/60',
+      glow: 'hover:shadow-[0_0_50px_-12px_rgba(139,92,246,0.5)]'
     },
     {
       id: 'checklist',
@@ -62,10 +83,11 @@ function App() {
       href: 'https://checklist.nounproject.ir',
       github: 'https://github.com/derhami/checklist',
       features: ['بیش از ۲۰۰ آیتم تخصصی', 'نمودار راداری', 'گزارش‌گیری PDF', 'سیستم پروژه'],
-      gradient: 'from-emerald-500/20 via-teal-500/20 to-cyan-500/20',
-      accent: 'bg-emerald-500',
-      text: 'text-emerald-400',
-      border: 'border-emerald-500/20 hover:border-emerald-500/40'
+      accentText: 'text-emerald-600 dark:text-emerald-400',
+      accentSoft: 'bg-emerald-100 dark:bg-emerald-500/10',
+      accentSolid: 'bg-emerald-500',
+      borderHover: 'hover:border-emerald-400 dark:hover:border-emerald-500/60',
+      glow: 'hover:shadow-[0_0_50px_-12px_rgba(16,185,129,0.5)]'
     },
     {
       id: 'tailwind',
@@ -75,65 +97,73 @@ function App() {
       icon: <Palette className="w-6 h-6" />,
       href: 'https://tailwind.nounproject.ir',
       github: 'https://github.com/derhami/tailwind-visualizer',
-      features: ['مقايسه بصری کلاس‌ها', 'شبیه‌ساز breakpoint', 'پالت رنگی', 'چت‌شیت'],
-      gradient: 'from-cyan-500/20 via-sky-500/20 to-blue-500/20',
-      accent: 'bg-cyan-500',
-      text: 'text-cyan-400',
-      border: 'border-cyan-500/20 hover:border-cyan-500/40'
+      features: ['مقایسه بصری کلاس‌ها', 'شبیه‌ساز breakpoint', 'پالت رنگی', 'چت‌شیت'],
+      accentText: 'text-sky-600 dark:text-sky-400',
+      accentSoft: 'bg-sky-100 dark:bg-sky-500/10',
+      accentSolid: 'bg-sky-500',
+      borderHover: 'hover:border-sky-400 dark:hover:border-sky-500/60',
+      glow: 'hover:shadow-[0_0_50px_-12px_rgba(14,165,233,0.5)]'
     },
     {
       id: 'ranko',
       name: 'ranko-seo',
       nameFa: 'رنکو',
-      description: 'ابزار حرفه‌ای سئو و بهینه‌سازی سایت با ۲۵۱ قاعده در ۲۰ دسته',
+      description:
+        'ابزار حرفه‌ای سئو و بهینه‌سازی سایت با ۲۵۱ قاعده در ۲۰ دسته، به‌همراه Core Web Vitals و تحلیل امنیتی',
       icon: <Zap className="w-6 h-6" />,
       href: 'https://ranko.nounproject.ir',
       github: 'https://github.com/derhami/ranko',
       features: ['۲۵۱ قاعده سئو', 'Core Web Vitals', 'تحلیل امنیتی', 'گزارش حرفه‌ای'],
-      gradient: 'from-amber-500/20 via-orange-500/20 to-red-500/20',
-      accent: 'bg-amber-500',
-      text: 'text-amber-400',
-      border: 'border-amber-500/20 hover:border-amber-500/40'
+      accentText: 'text-amber-600 dark:text-amber-400',
+      accentSoft: 'bg-amber-100 dark:bg-amber-500/10',
+      accentSolid: 'bg-amber-500',
+      borderHover: 'hover:border-amber-400 dark:hover:border-amber-500/60',
+      glow: 'hover:shadow-[0_0_50px_-12px_rgba(245,158,11,0.5)]'
     }
   ]
 
+  const featured = projects.find((p) => p.id === 'ranko')!
+  const others = projects.filter((p) => p.id !== 'ranko')
+
   return (
-    <div className="min-h-screen bg-[#09090b] text-white selection:bg-[#7b8fe8]/30">
+    <div className="min-h-screen bg-canvas text-ink selection:bg-accent/20 transition-colors">
       {/* Header */}
-      <motion.header 
+      <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="fixed top-0 left-0 right-0 z-50"
+        style={{ backgroundColor: 'var(--header-bg)' }}
       >
-        <div className="absolute inset-0 bg-[#09090b]/80 backdrop-blur-xl border-b border-white/5" />
+        <div className="absolute inset-0 backdrop-blur-xl border-b border-line" />
         <div className="relative max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <a href="#" className="flex items-center gap-3 group">
             <div className="relative">
-              <div className="absolute inset-0 bg-[#7b8fe8] blur-lg opacity-50" />
-              <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-[#1d2ea0] to-[#7b8fe8] flex items-center justify-center font-black text-lg">
+              <div className="absolute inset-0 bg-accent blur-lg opacity-40 group-hover:opacity-60 transition-opacity" />
+              <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-brand to-accent flex items-center justify-center font-black text-lg text-white">
                 L
               </div>
             </div>
             <div>
               <h1 className="font-bold text-base tracking-tight">لابراتوار درهمی</h1>
-              <p className="text-[11px] text-zinc-500 font-medium">Derhami Lab</p>
+              <p className="text-[11px] text-ink-faint font-medium">Derhami Lab</p>
             </div>
-          </div>
-          
+          </a>
+
           <div className="flex items-center gap-3">
-            <a 
-              href="https://derhami.com" 
+            <a
+              href="https://derhami.com"
               target="_blank"
-              className="hidden sm:flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors px-3 py-1.5 rounded-lg hover:bg-white/5"
+              className="hidden sm:flex items-center gap-2 text-sm text-ink-soft hover:text-ink transition-colors px-3 py-1.5 rounded-lg hover:bg-card-2"
             >
               وبسایت شخصی
               <ArrowUpRight className="w-3.5 h-3.5" />
             </a>
-            <div className="h-4 w-px bg-white/10 hidden sm:block" />
+            <div className="h-4 w-px bg-line-strong hidden sm:block" />
             <button
               onClick={() => setIsDark(!isDark)}
-              className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-200 active:scale-95"
+              className="p-2 rounded-lg bg-card border border-line hover:border-line-strong transition-all duration-200 active:scale-95 text-ink-soft hover:text-ink"
+              aria-label="تغییر حالت تیره و روشن"
             >
               {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
@@ -143,49 +173,46 @@ function App() {
 
       {/* Hero */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Effects */}
         <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#1d2ea0]/20 rounded-full blur-[128px]" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#7b8fe8]/10 rounded-full blur-[128px]" />
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent/20 rounded-full blur-[128px]" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brand/10 rounded-full blur-[128px]" />
         </div>
 
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCBmaWxsPSJ1cmwoI2dyaWQpIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIi8+PC9zdmc+')] opacity-50" />
+        <div className="absolute inset-0 bg-grid opacity-70" />
 
-        <motion.div 
-          style={{ opacity, scale }}
+        <motion.div
+          style={{ opacity: heroOpacity, scale: heroScale }}
           className="relative z-10 text-center px-6 max-w-5xl mx-auto"
         >
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-zinc-300 mb-8 backdrop-blur-sm"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-line text-sm text-ink-soft mb-8 backdrop-blur-sm"
           >
-            <Sparkles className="w-4 h-4 text-[#7b8fe8]" />
+            <Sparkles className="w-4 h-4 text-accent" />
             <span>مجموعه ابزارهای حرفه‌ای وب فارسی</span>
           </motion.div>
-          
+
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
             className="text-5xl sm:text-7xl lg:text-8xl font-black mb-8 tracking-tighter"
           >
-            <span className="bg-gradient-to-l from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-l from-ink via-ink-soft to-ink-faint bg-clip-text text-transparent">
               لابراتوار
             </span>
-            <br />
-            <span className="bg-gradient-to-l from-[#7b8fe8] to-[#a3b5f5] bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-l from-accent to-[#7284E3] dark:to-[#a3b5f5] bg-clip-text text-transparent">
               پروژه‌های درهمی
             </span>
           </motion.h2>
-          
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="text-lg sm:text-xl text-zinc-400 max-w-2xl mx-auto mb-12 leading-relaxed"
+            className="text-lg sm:text-xl text-ink-soft max-w-2xl mx-auto mb-12 leading-relaxed"
           >
             مجموعه‌ای از ابزارهای متن‌باز و رایگان برای توسعه‌دهندگان وب فارسی.
             <br className="hidden sm:block" />
@@ -200,17 +227,15 @@ function App() {
           >
             <a
               href="#projects"
-              className="group relative inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-white text-black font-semibold text-base overflow-hidden transition-all duration-300 hover:shadow-[0_0_40px_rgba(123,143,232,0.3)]"
+              className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-brand text-white font-semibold text-base hover:bg-brand-hover transition-all duration-300 hover:shadow-[0_0_40px_var(--accent-glow)]"
             >
-              <span className="relative z-10">مشاهده پروژه‌ها</span>
-              <ChevronDown className="relative z-10 w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#7b8fe8] to-[#a3b5f5] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <span className="relative z-10 group-hover:text-white transition-colors duration-300">مشاهده پروژه‌ها</span>
+              مشاهده پروژه‌ها
+              <ChevronDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
             </a>
             <a
               href="https://github.com/derhami"
               target="_blank"
-              className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-white/5 border border-white/10 font-semibold text-base hover:bg-white/10 transition-all duration-300"
+              className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-card border border-line-strong font-semibold text-base hover:bg-card-2 hover:border-line-strong transition-all duration-300"
             >
               <GithubIcon className="w-5 h-5" />
               <span>گیت‌هاب</span>
@@ -219,7 +244,6 @@ function App() {
           </motion.div>
         </motion.div>
 
-        {/* Scroll Indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -228,22 +252,21 @@ function App() {
         >
           <motion.div
             animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="w-6 h-10 rounded-full border-2 border-white/20 flex items-start justify-center p-2"
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            className="w-6 h-10 rounded-full border-2 border-line-strong flex items-start justify-center p-2"
           >
-            <motion.div className="w-1.5 h-1.5 rounded-full bg-white/60" />
+            <motion.div className="w-1.5 h-1.5 rounded-full bg-ink-faint" />
           </motion.div>
         </motion.div>
       </section>
 
       {/* Stats */}
       <section className="relative py-24 px-6">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent" />
         <div className="relative max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8">
             {[
               { value: '۴+', label: 'پروژه فعال', icon: <Code2 className="w-5 h-5" /> },
-              { value: '۲۵۱+', label: 'قاعده سئو', icon: <Zap className="w-5 h-5" /> },
+              { value: '۲۵۱+', label: 'قاعده سئو', icon: <Gauge className="w-5 h-5" /> },
               { value: '۱۰۰٪', label: 'متن‌باز', icon: <GithubIcon className="w-5 h-5" /> },
               { value: '۰', label: 'تومان', icon: <Sparkles className="w-5 h-5" /> }
             ].map((stat, i) => (
@@ -251,133 +274,248 @@ function App() {
                 key={stat.label}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
+                viewport={{ once: true, margin: '-100px' }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="group relative p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all duration-300"
+                className="group relative p-6 rounded-2xl bg-card border border-line hover:border-line-strong transition-all duration-300 shadow-[var(--shadow-card)]"
               >
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative">
-                  <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-[#7b8fe8]/10 text-[#7b8fe8] mb-4">
-                    {stat.icon}
-                  </div>
-                  <div className="text-3xl sm:text-4xl font-black text-white mb-2 tracking-tight">{stat.value}</div>
-                  <div className="text-sm text-zinc-500 font-medium">{stat.label}</div>
+                <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-accent-soft text-accent mb-4">
+                  {stat.icon}
                 </div>
+                <div className="text-3xl sm:text-4xl font-black mb-2 tracking-tight">{stat.value}</div>
+                <div className="text-sm text-ink-faint font-medium">{stat.label}</div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Projects */}
+      {/* Projects — Bento Grid */}
       <section id="projects" className="relative py-32 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.6 }}
             className="text-center mb-20"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#7b8fe8]/10 border border-[#7b8fe8]/20 text-sm text-[#7b8fe8] mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-soft text-sm text-accent mb-6">
               <Code2 className="w-4 h-4" />
               <span>پروژه‌ها</span>
             </div>
             <h3 className="text-4xl sm:text-5xl font-black mb-6 tracking-tight">ابزارهای حرفه‌ای</h3>
-            <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
+            <p className="text-ink-soft text-lg max-w-2xl mx-auto">
               مجموعه‌ای از ابزارهای متن‌باز برای توسعه وب فارسی
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {projects.map((project, i) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="group relative"
+          {/* Bento Layout: featured big + smaller tiles */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[minmax(0,1fr)]">
+            {/* Featured — Ranko */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.5 }}
+              className="sm:col-span-2 lg:row-span-2 relative group"
+            >
+              <a
+                href={featured.href}
+                target="_blank"
+                className={`relative flex flex-col h-full p-8 rounded-3xl bg-card border border-line overflow-hidden transition-all duration-300 ${featured.borderHover} ${featured.glow}`}
               >
-                <div className={`absolute inset-0 rounded-3xl bg-gradient-to-b ${project.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl`} />
-                <div className={`relative h-full p-8 rounded-3xl bg-[#09090b] border ${project.border} backdrop-blur-sm transition-all duration-300 group-hover:-translate-y-1`}>
-                  <div className="flex items-start justify-between mb-6">
-                    <div className={`p-3 rounded-2xl ${project.accent}/10 ${project.text}`}>
-                      {project.icon}
-                    </div>
-                    <div className="flex gap-2">
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-200 hover:scale-105"
-                        title="مشاهده کد"
-                      >
-                        <GithubIcon className="w-4 h-4" />
-                      </a>
-                      <a
-                        href={project.href}
-                        target="_blank"
-                        className={`p-2.5 rounded-xl ${project.accent}/10 hover:${project.accent}/20 transition-all duration-200 hover:scale-105 ${project.text}`}
-                        title="مشاهده دمو"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
-                    </div>
-                  </div>
-                  
-                  <h4 className="text-2xl font-bold mb-3">{project.nameFa}</h4>
-                  <p className="text-zinc-400 text-sm leading-relaxed mb-6">{project.description}</p>
-                  
-                  <ul className="space-y-3">
-                    {project.features.map((feature, j) => (
-                      <li key={j} className="flex items-center gap-3 text-sm text-zinc-300">
-                        <div className={`w-1.5 h-1.5 rounded-full ${project.accent}`} />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
+                <div className={`absolute inset-0 bg-gradient-to-br ${featured.accentSoft} opacity-60 group-hover:opacity-100 transition-opacity duration-500`} />
+                <div className="absolute -top-16 -left-16 w-48 h-48 rounded-full bg-accent/10 blur-3xl" />
 
-                  <div className="mt-8 pt-6 border-t border-white/5">
+                <div className="relative flex items-start justify-between mb-6">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-accent text-white">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    پروژه ویژه
+                  </div>
+                  <div className="flex gap-2">
                     <a
-                      href={project.href}
+                      href={featured.github}
                       target="_blank"
-                      className={`inline-flex items-center gap-2 text-sm font-medium ${project.text} group/link`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="p-2.5 rounded-xl bg-card/80 border border-line hover:border-line-strong text-ink-soft hover:text-ink transition-all duration-200 hover:scale-105"
+                      title="مشاهده کد"
                     >
-                      <span>مشاهده پروژه</span>
-                      <ArrowUpRight className="w-4 h-4 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+                      <GithubIcon className="w-4 h-4" />
                     </a>
                   </div>
                 </div>
-              </motion.div>
-            ))}
+
+                <div className={`relative inline-flex items-center justify-center w-14 h-14 rounded-2xl ${featured.accentSoft} ${featured.accentText} mb-5`}>
+                  {featured.icon}
+                </div>
+
+                <h4 className="relative text-2xl font-bold mb-2">{featured.nameFa}</h4>
+                <p className="relative text-ink-soft text-sm leading-relaxed mb-6">
+                  {featured.description}
+                </p>
+
+                <div className="relative grid grid-cols-3 gap-3 mb-6">
+                  {[
+                    { icon: <Gauge className="w-4 h-4" />, v: '۲۵۱', l: 'قاعده' },
+                    { icon: <ShieldCheck className="w-4 h-4" />, v: '۲۰', l: 'دسته' },
+                    { icon: <Languages className="w-4 h-4" />, v: '۵', l: 'فرمت خروجی' }
+                  ].map((s) => (
+                    <div key={s.l} className="p-3 rounded-xl bg-card/70 border border-line text-center">
+                      <div className={`inline-flex ${featured.accentText} mb-1`}>{s.icon}</div>
+                      <div className="text-lg font-black leading-none">{s.v}</div>
+                      <div className="text-[11px] text-ink-faint mt-1">{s.l}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="relative mt-auto flex items-center justify-between pt-5">
+                  <span className={`inline-flex items-center gap-1.5 text-sm font-bold ${featured.accentText}`}>
+                    مشاهده پروژه
+                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </span>
+                  <span className="text-[11px] text-ink-faint font-mono">{featured.name}</span>
+                </div>
+              </a>
+            </motion.div>
+
+            {/* Virastar */}
+            <motion.a
+              href={others[0].href}
+              target="_blank"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className={`relative group flex flex-col p-6 rounded-3xl bg-card border border-line overflow-hidden transition-all duration-300 ${others[0].borderHover} ${others[0].glow}`}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-2xl ${others[0].accentSoft} ${others[0].accentText}`}>
+                  {others[0].icon}
+                </div>
+                <a
+                  href={others[0].github}
+                  target="_blank"
+                  onClick={(e) => e.stopPropagation()}
+                  className="p-2 rounded-xl bg-card-2 border border-line text-ink-soft hover:text-ink transition-all duration-200 hover:scale-105"
+                >
+                  <GithubIcon className="w-4 h-4" />
+                </a>
+              </div>
+              <h4 className="text-lg font-bold mb-1.5 flex items-center gap-2">
+                {others[0].nameFa}
+                <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </h4>
+              <p className="text-ink-soft text-sm leading-relaxed mb-4 flex-1">{others[0].description}</p>
+              <div className="flex flex-wrap gap-1.5">
+                {others[0].features.slice(0, 3).map((f) => (
+                  <span key={f} className="px-2 py-1 rounded-md bg-card-2 border border-line text-[11px] text-ink-faint">
+                    {f}
+                  </span>
+                ))}
+              </div>
+            </motion.a>
+
+            {/* Checklist */}
+            <motion.a
+              href={others[1].href}
+              target="_blank"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className={`relative group flex flex-col p-6 rounded-3xl bg-card border border-line overflow-hidden transition-all duration-300 ${others[1].borderHover} ${others[1].glow}`}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-2xl ${others[1].accentSoft} ${others[1].accentText}`}>
+                  {others[1].icon}
+                </div>
+                <a
+                  href={others[1].github}
+                  target="_blank"
+                  onClick={(e) => e.stopPropagation()}
+                  className="p-2 rounded-xl bg-card-2 border border-line text-ink-soft hover:text-ink transition-all duration-200 hover:scale-105"
+                >
+                  <GithubIcon className="w-4 h-4" />
+                </a>
+              </div>
+              <h4 className="text-lg font-bold mb-1.5 flex items-center gap-2">
+                {others[1].nameFa}
+                <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </h4>
+              <p className="text-ink-soft text-sm leading-relaxed mb-4 flex-1">{others[1].description}</p>
+              <div className="flex flex-wrap gap-1.5">
+                {others[1].features.slice(0, 3).map((f) => (
+                  <span key={f} className="px-2 py-1 rounded-md bg-card-2 border border-line text-[11px] text-ink-faint">
+                    {f}
+                  </span>
+                ))}
+              </div>
+            </motion.a>
+
+            {/* Tailwind */}
+            <motion.a
+              href={others[2].href}
+              target="_blank"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className={`sm:col-span-2 lg:col-span-2 relative group flex items-center gap-6 p-6 rounded-3xl bg-card border border-line overflow-hidden transition-all duration-300 ${others[2].borderHover} ${others[2].glow}`}
+            >
+              <div className={`inline-flex items-center justify-center w-14 h-14 shrink-0 rounded-2xl ${others[2].accentSoft} ${others[2].accentText}`}>
+                {others[2].icon}
+              </div>
+              <div className="flex-1 min-w-0">
+                <h4 className="text-lg font-bold mb-1 flex items-center gap-2">
+                  {others[2].nameFa}
+                  <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </h4>
+                <p className="text-ink-soft text-sm leading-relaxed mb-3">{others[2].description}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {others[2].features.slice(0, 4).map((f) => (
+                    <span key={f} className="px-2 py-1 rounded-md bg-card-2 border border-line text-[11px] text-ink-faint">
+                      {f}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <a
+                href={others[2].github}
+                target="_blank"
+                onClick={(e) => e.stopPropagation()}
+                className="shrink-0 p-2 rounded-xl bg-card-2 border border-line text-ink-soft hover:text-ink transition-all duration-200 hover:scale-105"
+              >
+                <GithubIcon className="w-4 h-4" />
+              </a>
+            </motion.a>
           </div>
         </div>
       </section>
 
       {/* About */}
       <section className="relative py-32 px-6 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#1d2ea0]/5 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/5 to-transparent" />
         <div className="relative max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#1d2ea0]/20 text-[#7b8fe8] mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-accent-soft text-accent mb-8">
               <Sparkles className="w-8 h-8" />
             </div>
             <h3 className="text-4xl sm:text-5xl font-black mb-8 tracking-tight">درباره لابراتوار</h3>
-            <p className="text-zinc-400 text-lg leading-relaxed mb-12 max-w-3xl mx-auto">
-              لابراتوار پروژه‌های درهمی با هدف ایجاد ابزارهای حرفه‌ای و رایگان برای جامعه وب فارسی تأسیس شده است. 
+            <p className="text-ink-soft text-lg leading-relaxed mb-12 max-w-3xl mx-auto">
+              لابراتوار پروژه‌های درهمی با هدف ایجاد ابزارهای حرفه‌ای و رایگان برای جامعه وب فارسی تأسیس شده است.
               تمامی پروژه‌ها متن‌باز هستند و با عشق و دقت ساخته شده‌اند. ما باور داریم که ابزارهای خوب باید برای همه در دسترس باشند.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
                 href="https://derhami.com"
                 target="_blank"
-                className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-[#1d2ea0] text-white font-semibold text-base hover:bg-[#18298b] transition-all duration-300 hover:shadow-[0_0_30px_rgba(29,46,160,0.4)]"
+                className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-brand text-white font-semibold text-base hover:bg-brand-hover transition-all duration-300 hover:shadow-[0_0_30px_var(--accent-glow)]"
               >
                 <span>مشاهده وبسایت شخصی</span>
                 <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -385,7 +523,7 @@ function App() {
               <a
                 href="https://github.com/derhami"
                 target="_blank"
-                className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-white/5 border border-white/10 font-semibold text-base hover:bg-white/10 transition-all duration-300"
+                className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-card border border-line-strong font-semibold text-base hover:bg-card-2 transition-all duration-300"
               >
                 <GithubIcon className="w-5 h-5" />
                 <span>گیت‌هاب</span>
@@ -396,32 +534,33 @@ function App() {
       </section>
 
       {/* Footer */}
-      <footer className="relative py-12 px-6 border-t border-white/5">
+      <footer className="relative py-12 px-6 border-t border-line">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#1d2ea0] to-[#7b8fe8] flex items-center justify-center font-bold text-sm">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand to-accent flex items-center justify-center font-bold text-sm text-white">
                 L
               </div>
-              <span className="text-sm text-zinc-500">
-                لابراتوار پروژه‌های درهمی © {new Date().getFullYear()}
-              </span>
+              <span className="text-sm text-ink-faint">لابراتوار پروژه‌های درهمی © {new Date().getFullYear()}</span>
             </div>
             <div className="flex items-center gap-6">
-              <a href="https://derhami.com" target="_blank" className="text-sm text-zinc-500 hover:text-white transition-colors">
+              <a href="https://derhami.com" target="_blank" className="text-sm text-ink-faint hover:text-ink transition-colors">
                 وبسایت شخصی
               </a>
-              <a href="https://github.com/derhami" target="_blank" className="text-sm text-zinc-500 hover:text-white transition-colors">
+              <a href="https://github.com/derhami" target="_blank" className="text-sm text-ink-faint hover:text-ink transition-colors">
                 گیت‌هاب
               </a>
-              <a href="mailto:hamid@derhami.com" className="text-sm text-zinc-500 hover:text-white transition-colors">
+              <a href="mailto:hamid@derhami.com" className="text-sm text-ink-faint hover:text-ink transition-colors">
                 ایمیل
               </a>
             </div>
           </div>
-          <div className="mt-8 pt-8 border-t border-white/5 text-center">
-            <p className="text-xs text-zinc-600">
-              ساخته شده با ♥ توسط <a href="https://derhami.com" className="text-[#7b8fe8] hover:underline">حمیدرضا درهمی</a>
+          <div className="mt-8 pt-8 border-t border-line text-center">
+            <p className="text-xs text-ink-faint">
+              ساخته شده با ♥ توسط{' '}
+              <a href="https://derhami.com" className="text-accent hover:underline">
+                حمیدرضا درهمی
+              </a>
             </p>
           </div>
         </div>
