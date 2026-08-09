@@ -1,21 +1,22 @@
 import { useState, useEffect } from 'react'
 import { 
-  ArrowLeft, 
   ExternalLink, 
   GitBranch, 
-  Globe, 
   CheckSquare, 
-  Sparkles, 
-  Shield,
-  Zap,
-  Heart,
   Type,
   Palette,
-  Rocket,
-  Users,
-  Code2,
   Sun,
-  Moon
+  Moon,
+  Folder,
+  File,
+  ChevronRight,
+  Terminal,
+  Search,
+  Settings,
+  MoreHorizontal,
+  Plus,
+  Heart,
+  X
 } from 'lucide-react'
 
 function App() {
@@ -27,348 +28,406 @@ function App() {
     return false
   })
 
+  const [activeTab, setActiveTab] = useState('app.tsx')
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+
   useEffect(() => {
     document.documentElement.classList.toggle('dark', isDark)
     localStorage.setItem('theme', isDark ? 'dark' : 'light')
   }, [isDark])
 
+  const projects = [
+    {
+      id: 'virastar',
+      name: 'persian-virastar',
+      nameFa: 'پرشین ویراستار',
+      description: 'ابزار حرفه‌ای ویرایش و نظافت متن فارسی',
+      icon: <Type className="w-5 h-5" />,
+      href: 'https://virastar.nounproject.ir',
+      github: 'https://github.com/derhami/persian-virastar',
+      features: ['ویرایش هوشمند متن فارسی', 'اصلاح نیم‌فاصله', 'تبدیل اعداد', 'تحلیل خوانایی']
+    },
+    {
+      id: 'checklist',
+      name: 'checklist',
+      nameFa: 'چک‌لیست طراحی',
+      description: 'مرجع جامع چک‌لیست‌های تخصصی UI/UX',
+      icon: <CheckSquare className="w-5 h-5" />,
+      href: 'https://checklist.nounproject.ir',
+      github: 'https://github.com/derhami/checklist',
+      features: ['بیش از ۲۰۰ آیتم تخصصی', 'نمودار راداری', 'گزارش‌گیری PDF', 'سیستم پروژه']
+    },
+    {
+      id: 'tailwind',
+      name: 'tailwind-visualizer',
+      nameFa: 'ویژوالایزر تیلویند',
+      description: 'مرجع بصری تعاملی Tailwind CSS',
+      icon: <Palette className="w-5 h-5" />,
+      href: 'https://tailwind.nounproject.ir',
+      github: 'https://github.com/derhami/tailwind-visualizer',
+      features: ['مقايسه بصری کلاس‌ها', 'شبیه‌ساز breakpoint', 'پالت رنگی', 'چت‌شیت']
+    }
+  ]
+
+  const [selectedProject, setSelectedProject] = useState(projects[0])
+
+  const bgClass = isDark ? 'bg-[#1e1e1e]' : 'bg-[#f5f5f5]'
+  const topBarBg = isDark ? 'bg-[#323233]' : 'bg-[#e8e8e8]'
+  const borderColor = isDark ? 'border-[#3c3c3c]' : 'border-[#d4d4d4]'
+  const textClass = isDark ? 'text-[#cccccc]' : 'text-[#333333]'
+  const textMuted = isDark ? 'text-[#808080]' : 'text-[#666666]'
+  const textBright = isDark ? 'text-[#ffffff]' : 'text-[#000000]'
+  const sidebarBg = isDark ? 'bg-[#252526]' : 'bg-[#f3f3f3]'
+  const editorBg = isDark ? 'bg-[#1e1e1e]' : 'bg-[#ffffff]'
+  const hoverBg = isDark ? 'hover:bg-[#4a4a4a]' : 'hover:bg-[#d4d4d4]'
+  const selectedBg = isDark ? 'bg-[#04395e]' : 'bg-[#d6e7f5]'
+  const hoverBgSidebar = isDark ? 'hover:bg-[#2a2d2e]' : 'hover:bg-[#e8e8e8]'
+
+  const codeColors = {
+    keyword: isDark ? 'text-[#569cd6]' : 'text-[#0000ff]',
+    string: isDark ? 'text-[#ce9178]' : 'text-[#a31515]',
+    comment: isDark ? 'text-[#6a9955]' : 'text-[#008000]',
+    variable: isDark ? 'text-[#9cdcfe]' : 'text-[#001080]',
+    type: isDark ? 'text-[#4ec9b0]' : 'text-[#2b91af]',
+    function: isDark ? 'text-[#dcdcaa]' : 'text-[#795e26]',
+    punctuation: isDark ? 'text-[#808080]' : 'text-[#000000]',
+    number: isDark ? 'text-[#b5cea8]' : 'text-[#098658]'
+  }
+
   return (
-    <div className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 transition-colors duration-300">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-stone-950/80 backdrop-blur-xl border-b border-stone-200/50 dark:border-stone-800/50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-brand-600 flex items-center justify-center">
-                <span className="text-white font-black text-lg">D</span>
-              </div>
-              <span className="font-bold text-lg hidden sm:block">لابراتوار درهمی</span>
-            </div>
-            
-            <div className="flex items-center gap-4">
-              <a href="#projects" className="text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
+    <div className={`min-h-screen ${bgClass} transition-colors duration-300`}>
+      {/* Top Bar */}
+      <div className={`${topBarBg} border-b ${borderColor} px-2 py-1 flex items-center justify-between`}>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 px-2">
+            <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
+            <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
+            <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
+          </div>
+          <div className={`flex items-center gap-1 px-3 py-1 rounded ${sidebarBg} ${textClass} text-xs`}>
+            <Folder className="w-3.5 h-3.5" />
+            <span>lab.derhami</span>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-1">
+          <button className={`p-1.5 rounded ${hoverBg} transition-colors`}>
+            <Search className={`w-4 h-4 ${textClass}`} />
+          </button>
+          <button className={`p-1.5 rounded ${hoverBg} transition-colors`}>
+            <Settings className={`w-4 h-4 ${textClass}`} />
+          </button>
+          <button 
+            onClick={() => setIsDark(!isDark)}
+            className={`p-1.5 rounded ${hoverBg} transition-colors`}
+          >
+            {isDark ? <Sun className={`w-4 h-4 ${textClass}`} /> : <Moon className={`w-4 h-4 ${textClass}`} />}
+          </button>
+        </div>
+      </div>
+
+      <div className="flex h-[calc(100vh-37px)]">
+        {/* Sidebar */}
+        <div className={`${sidebarOpen ? 'w-64' : 'w-12'} ${sidebarBg} border-l ${borderColor} flex flex-col transition-all duration-300`}>
+          {sidebarOpen && (
+            <>
+              <div className={`px-3 py-2 text-xs font-semibold ${textMuted} uppercase tracking-wider border-b ${borderColor}`}>
                 پروژه‌ها
-              </a>
-              <a href="#about" className="text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
-                درباره ما
-              </a>
-              <button
-                onClick={() => setIsDark(!isDark)}
-                className="p-2 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
-              >
-                {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              </div>
+              <div className="flex-1 overflow-y-auto py-1">
+                {projects.map((project) => (
+                  <button
+                    key={project.id}
+                    onClick={() => setSelectedProject(project)}
+                    className={`w-full px-3 py-2 flex items-center gap-2 text-right transition-colors ${
+                      selectedProject.id === project.id
+                        ? selectedBg
+                        : hoverBgSidebar
+                    }`}
+                  >
+                    <ChevronRight className={`w-3 h-3 ${textClass} shrink-0`} />
+                    <span className={`text-xs ${textClass} truncate`}>
+                      {project.nameFa}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className={`p-3 ${hoverBgSidebar} transition-colors border-t ${borderColor}`}
+          >
+            <MoreHorizontal className={`w-4 h-4 ${textClass}`} />
+          </button>
+        </div>
+
+        {/* Main Editor */}
+        <div className="flex-1 flex flex-col min-w-0">
+          {/* Tabs */}
+          <div className={`${sidebarBg} border-b ${borderColor} flex items-center`}>
+            <div className="flex">
+              {['app.tsx', 'projects.ts', 'styles.css'].map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`px-4 py-2 text-xs font-mono flex items-center gap-2 border-r ${
+                    activeTab === tab
+                      ? `${editorBg} ${textBright} border-[#007acc]`
+                      : `${sidebarBg} ${textClass} ${borderColor}`
+                  } transition-colors`}
+                >
+                  <File className="w-3.5 h-3.5" />
+                  {tab}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Code Editor */}
+          <div className={`flex-1 overflow-auto ${editorBg} p-4`}>
+            {activeTab === 'app.tsx' ? (
+              <div className="font-mono text-xs leading-6">
+                <div className={codeColors.keyword}>
+                  <span className={codeColors.keyword}>import</span>
+                  {' { '}
+                  <span className={codeColors.type}>useState</span>
+                  {' } '}
+                  <span className={codeColors.keyword}>from</span>
+                  {' '}
+                  <span className={codeColors.string}>'react'</span>
+                </div>
+                
+                <div className="my-4" />
+                
+                <div className={codeColors.keyword}>
+                  <span className={codeColors.keyword}>function</span>
+                  {' '}
+                  <span className={codeColors.function}>Lab</span>
+                  {'() {'}
+                </div>
+                
+                <div className="pl-4">
+                  <div className={codeColors.keyword}>
+                    <span className={codeColors.keyword}>const</span>
+                    {' [project, setProject] = '}
+                    <span className={codeColors.keyword}>useState</span>
+                    {'('}
+                    <span className={codeColors.string}>'virastar'</span>
+                    {')'}
+                  </div>
+                  
+                  <div className="my-2" />
+                  
+                  <div className={codeColors.comment}>
+                    {'// لابراتوار پروژه‌های درهمی'}
+                  </div>
+                  <div className={codeColors.comment}>
+                    {'// مجموعه ابزارهای حرفه‌ای وب فارسی'}
+                  </div>
+                  
+                  <div className="my-2" />
+                  
+                  <div className={codeColors.keyword}>
+                    <span className={codeColors.keyword}>return</span>
+                    {' ('}
+                  </div>
+                  
+                  <div className="pl-4">
+                    <div className={codeColors.punctuation}>
+                      &lt;<span className={codeColors.keyword}>div</span> <span className={codeColors.variable}>className</span>=<span className={codeColors.string}>"lab-container"</span>&gt;
+                    </div>
+                    <div className="pl-4">
+                      <div className={codeColors.punctuation}>
+                        &lt;<span className={codeColors.keyword}>Header</span> /&gt;
+                      </div>
+                      <div className={codeColors.punctuation}>
+                        &lt;<span className={codeColors.keyword}>ProjectCard</span> <span className={codeColors.variable}>project</span>=<span className={codeColors.punctuation}>{'{'}</span>project<span className={codeColors.punctuation}>{'}'}</span> /&gt;
+                      </div>
+                      <div className={codeColors.punctuation}>
+                        &lt;<span className={codeColors.keyword}>Features</span> <span className={codeColors.variable}>items</span>=<span className={codeColors.punctuation}>{'{'}</span>project.features<span className={codeColors.punctuation}>{'}'}</span> /&gt;
+                      </div>
+                    </div>
+                    <div className={codeColors.punctuation}>
+                      &lt;/<span className={codeColors.keyword}>div</span>&gt;
+                    </div>
+                  </div>
+                  
+                  <div>{')'}</div>
+                </div>
+                
+                <div>{'}'}</div>
+              </div>
+            ) : activeTab === 'projects.ts' ? (
+              <div className="font-mono text-xs leading-6">
+                <div className={codeColors.keyword}>
+                  <span className={codeColors.keyword}>export</span>
+                  {' '}
+                  <span className={codeColors.keyword}>const</span>
+                  {' '}
+                  <span className={codeColors.type}>projects</span>
+                  {' = ['}
+                </div>
+                
+                {projects.map((project, index) => (
+                  <div key={project.id} className="pl-4">
+                    <div>{'  {'}</div>
+                    <div className="pl-4">
+                      <div><span className={codeColors.variable}>id</span><span className={codeColors.punctuation}>: </span><span className={codeColors.string}>'{project.id}'</span></div>
+                      <div><span className={codeColors.variable}>name</span><span className={codeColors.punctuation}>: </span><span className={codeColors.string}>'{project.nameFa}'</span></div>
+                      <div><span className={codeColors.variable}>url</span><span className={codeColors.punctuation}>: </span><span className={codeColors.string}>'{project.href}'</span></div>
+                    </div>
+                    <div>{'  }'}</div>
+                    {index < projects.length - 1 && <div>,</div>}
+                  </div>
+                ))}
+                
+                <div>{']'}</div>
+              </div>
+            ) : (
+              <div className="font-mono text-xs leading-6">
+                <div className={codeColors.keyword}>
+                  <span className={codeColors.keyword}>@import</span>
+                  {' '}
+                  <span className={codeColors.string}>"tailwindcss"</span>
+                  {';'}
+                </div>
+                
+                <div className="my-4" />
+                
+                <div className={codeColors.keyword}>
+                  <span className={codeColors.keyword}>@font-face</span>
+                  {' {'}
+                </div>
+                <div className="pl-4">
+                  <div><span className={codeColors.variable}>font-family</span><span className={codeColors.punctuation}>: </span><span className={codeColors.string}>'IRANYekanX'</span><span className={codeColors.punctuation}>;</span></div>
+                  <div><span className={codeColors.variable}>src</span><span className={codeColors.punctuation}>: </span><span className={codeColors.string}>url('/fonts/IRANYekanXVF.woff2')</span><span className={codeColors.punctuation}>;</span></div>
+                </div>
+                <div>{'}'}</div>
+                
+                <div className="my-4" />
+                
+                <div className={codeColors.comment}>{'/* Derhami Design System */'}</div>
+                <div className={codeColors.keyword}>
+                  <span className={codeColors.keyword}>@theme</span>
+                  {' {'}
+                </div>
+                <div className="pl-4">
+                  <div><span className={codeColors.variable}>--color-brand</span><span className={codeColors.punctuation}>: </span><span className={codeColors.number}>#1D2EA0</span><span className={codeColors.punctuation}>;</span></div>
+                </div>
+                <div>{'}'}</div>
+              </div>
+            )}
+          </div>
+
+          {/* Terminal */}
+          <div className={`${editorBg} border-t ${borderColor} h-32 overflow-auto`}>
+            <div className={`px-4 py-2 ${sidebarBg} border-b ${borderColor} flex items-center justify-between`}>
+              <div className="flex items-center gap-2">
+                <Terminal className={`w-3.5 h-3.5 ${textClass}`} />
+                <span className={`text-xs font-semibold ${textClass}`}>Terminal</span>
+              </div>
+              <button className={`p-1 rounded ${hoverBg}`}>
+                <Plus className={`w-3.5 h-3.5 ${textClass}`} />
+              </button>
+            </div>
+            <div className="p-4 font-mono text-xs">
+              <div className={codeColors.comment}>
+                <span className={codeColors.keyword}>$</span>
+                {' npm run build'}
+              </div>
+              <div className={textClass}>
+                {'✓ Built in 2.34s'}
+              </div>
+              <div className={codeColors.comment}>
+                <span className={codeColors.keyword}>$</span>
+                {' npm run deploy'}
+              </div>
+              <div className={textClass}>
+                {'🚀 Deployed to https://nounproject.ir'}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Panel */}
+        <div className={`w-80 ${sidebarBg} border-l ${borderColor} flex flex-col hidden lg:flex`}>
+          <div className={`px-4 py-3 ${sidebarBg} border-b ${borderColor}`}>
+            <div className="flex items-center justify-between">
+              <span className={`text-xs font-semibold ${textClass}`}>جزئیات پروژه</span>
+              <button className={`p-1 rounded ${hoverBg}`}>
+                <X className={`w-3.5 h-3.5 ${textClass}`} />
               </button>
             </div>
           </div>
-        </div>
-      </nav>
-
-      {/* Hero Section - Stunning gradient */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-brand-50 via-white to-rose-50 dark:from-brand-950/30 dark:via-stone-950 dark:to-rose-950/20 pointer-events-none" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-brand-400/10 dark:bg-brand-500/5 rounded-full blur-3xl pointer-events-none" />
-        
-        <div className="max-w-6xl mx-auto relative">
-          <div className="text-center space-y-8 max-w-4xl mx-auto">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-100 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 text-sm font-medium border border-brand-200 dark:border-brand-800/50 animate-fade-in">
-              <Sparkles className="w-4 h-4" />
-              <span>ابزارهای حرفه‌ای وب فارسی</span>
+          
+          <div className="flex-1 overflow-y-auto p-4">
+            <div className="flex items-center gap-3 mb-4">
+              <div className={`p-2 rounded-lg ${editorBg} ${codeColors.keyword}`}>
+                {selectedProject.icon}
+              </div>
+              <div>
+                <h3 className={`font-bold ${textBright}`}>
+                  {selectedProject.nameFa}
+                </h3>
+                <p className={`text-xs ${textMuted}`}>
+                  {selectedProject.name}
+                </p>
+              </div>
             </div>
             
-            {/* Title */}
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-tight animate-slide-up">
-              <span className="bg-gradient-to-l from-brand-600 to-brand-800 dark:from-brand-400 dark:to-brand-600 bg-clip-text text-transparent">
-                لابراتوار پروژه‌های درهمی
-              </span>
-            </h1>
-            
-            {/* Description */}
-            <p className="text-lg sm:text-xl text-stone-600 dark:text-stone-400 max-w-2xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: '0.1s' }}>
-              مجموعه‌ای از ابزارهای متن‌باز و رایگان برای بهبود تجربه کاربری جامعه وب ایران
+            <p className={`text-xs mb-4 ${textClass}`}>
+              {selectedProject.description}
             </p>
             
-            {/* CTA Buttons */}
-            <div className="flex flex-wrap items-center justify-center gap-4 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+            <div className="mb-4">
+              <h4 className={`text-xs font-semibold mb-2 ${textClass}`}>
+                امکانات
+              </h4>
+              <ul className="space-y-1">
+                {selectedProject.features.map((feature, index) => (
+                  <li key={index} className={`text-xs ${textClass} flex items-center gap-2`}>
+                    <CheckSquare className={`w-3 h-3 ${codeColors.type}`} />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div className="flex gap-2">
               <a
-                href="#projects"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-bold transition-all shadow-lg shadow-brand-600/25 hover:shadow-xl hover:shadow-brand-600/30 hover:-translate-y-0.5"
-              >
-                مشاهده پروژه‌ها
-                <ArrowLeft className="w-5 h-5" />
-              </a>
-              <a
-                href="https://github.com/derhami"
+                href={selectedProject.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-900 dark:text-stone-100 font-bold transition-all border border-stone-200 dark:border-stone-700"
+                className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded bg-[#007acc] hover:bg-[#0098ff] text-white text-xs font-bold transition-colors"
               >
-                <GitBranch className="w-5 h-5" />
-                گیت‌هاب
+                <ExternalLink className="w-3.5 h-3.5" />
+                مشاهده
+              </a>
+              <a
+                href={selectedProject.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded ${sidebarBg} ${hoverBg} ${textClass} text-xs font-medium transition-colors`}
+              >
+                <GitBranch className="w-3.5 h-3.5" />
+                کد
               </a>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white dark:bg-stone-900 border-y border-stone-200 dark:border-stone-800">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div className="space-y-2">
-              <div className="text-4xl font-black text-brand-600 dark:text-brand-400">۲+</div>
-              <div className="text-sm text-stone-500 dark:text-stone-400">پروژه فعال</div>
-            </div>
-            <div className="space-y-2">
-              <div className="text-4xl font-black text-brand-600 dark:text-brand-400">۱۰۰٪</div>
-              <div className="text-sm text-stone-500 dark:text-stone-400">متن‌باز و رایگان</div>
-            </div>
-            <div className="space-y-2">
-              <div className="text-4xl font-black text-brand-600 dark:text-brand-400">RTL</div>
-              <div className="text-sm text-stone-500 dark:text-stone-400">پشتیبانی کامل فارسی</div>
-            </div>
-            <div className="space-y-2">
-              <div className="text-4xl font-black text-brand-600 dark:text-brand-400">۲۴/۷</div>
-              <div className="text-sm text-stone-500 dark:text-stone-400">آماده استفاده</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Projects Section */}
-      <section id="projects" className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-black text-stone-900 dark:text-stone-100 mb-4">
-              پروژه‌های ما
-            </h2>
-            <p className="text-stone-600 dark:text-stone-400 max-w-2xl mx-auto">
-              ابزارهای حرفه‌ای که برای بهبود تجربه کاربری جامعه وب ایران ساخته شده‌اند
-            </p>
-          </div>
           
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Project 1: Persian Virastar */}
-            <ProjectCard
-              title="پرشین ویراستار"
-              titleEn="Persian Virastar"
-              description="ابزار حرفه‌ای ویرایش و نظافت متن فارسی با الگوریتم‌های هوشمند"
-              icon={<Type className="w-8 h-8" />}
-              features={[
-                'حذف فاصله‌های اضافی و نیم‌فاصله',
-                'ترکیب و جداسازی کلمات',
-                'تبدیل اعداد فارسی به لاتین',
-                'فرمت‌های متنی هوشمند'
-              ]}
-              href="https://virastar.nounproject.ir"
-              github="https://github.com/derhami/persian-virastar"
-            />
-            
-            {/* Project 2: UX Checklist */}
-            <ProjectCard
-              title="چک‌لیست طراحی"
-              titleEn="Design Checklist"
-              description="چک‌لیست جامع ارزیابی تجربه کاربری با بیش از ۲۰۰ آیتم تخصصی"
-              icon={<CheckSquare className="w-8 h-8" />}
-              features={[
-                'دسته‌بندی حوزه‌های اصلی UX',
-                'نمودار راداری بلوغ تجربه کاربری',
-                'سیستم پروژه چندگانه',
-                'گزارش‌گیری PDF حرفه‌ای'
-              ]}
-              href="https://checklist.nounproject.ir"
-              github="https://github.com/derhami/checklist"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-stone-900">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-black text-stone-900 dark:text-stone-100 mb-4">
-              چرا لابراتوار درهمی؟
-            </h2>
-            <p className="text-stone-600 dark:text-stone-400 max-w-2xl mx-auto">
-              کیفیت، جزئیات و تمرکز بر نیاز کاربر ایرانی
-            </p>
-          </div>
-          
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <FeatureCard
-              icon={<Palette className="w-6 h-6" />}
-              title="طراحی برند یکپارچه"
-              description="تمام پروژه‌ها با پالت رنگی یکسان و هویت بصری منسجم طراحی شده‌اند"
-            />
-            <FeatureCard
-              icon={<Shield className="w-6 h-6" />}
-              title="کاملاً رایگان"
-              description="تمام پروژه‌ها به صورت متن‌باز و رایگان در اختیار جامعه طراحی قرار دارند"
-            />
-            <FeatureCard
-              icon={<Zap className="w-6 h-6" />}
-              title="عملکرد بالا"
-              description="بهینه‌سازی شده برای سرعت و کارایی با استفاده از فناوری‌های نوین"
-            />
-            <FeatureCard
-              icon={<Code2 className="w-6 h-6" />}
-              title="توسعه حرفه‌ای"
-              description="با استفاده از TypeScript، React و استانداردهای روز توسعه وب"
-            />
-            <FeatureCard
-              icon={<Globe className="w-6 h-6" />}
-              title="پشتیبانی از RTL"
-              description="طراحی کاملاً سازگار با راست‌به‌چپ و زبان فارسی"
-            />
-            <FeatureCard
-              icon={<Rocket className="w-6 h-6" />}
-              title="به‌روزرسانی مداوم"
-              description="پروژه‌ها به صورت مداوم بهبود و به‌روزرسانی می‌شوند"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* About Team Section */}
-      <section id="about" className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-gradient-to-br from-brand-50 to-white dark:from-brand-950/20 dark:to-stone-900 rounded-3xl p-8 sm:p-12 shadow-sm border border-brand-200/50 dark:border-brand-800/30">
-            <div className="text-center space-y-6">
-              <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-white text-3xl font-black mx-auto shadow-lg shadow-brand-600/25">
-                D
-              </div>
-              
-              <h2 className="text-3xl sm:text-4xl font-black text-stone-900 dark:text-stone-100">
-                لابراتوار پروژه‌های درهمی
-              </h2>
-              
-              <p className="text-stone-600 dark:text-stone-400 leading-relaxed max-w-2xl mx-auto text-lg">
-                مجموعه‌ای از علاقه‌مندان به طراحی و توسعه وب که با هدف بهبود تجربه کاربری جامعه وب ایران، ابزارهای حرفه‌ای و رایگان می‌سازند. ما باور داریم که ابزارهای خوب باید در دسترس همه باشند.
-              </p>
-              
-              <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-                <div className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 text-sm font-medium">
-                  <Users className="w-4 h-4" />
-                  تیم توسعه
-                </div>
-                <div className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 text-sm font-medium">
-                  <Heart className="w-4 h-4" />
-                  ساخته شده با عشق
-                </div>
-                <div className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 text-sm font-medium">
-                  <Globe className="w-4 h-4" />
-                  برای ایران
-                </div>
+          <div className={`px-4 py-3 ${sidebarBg} border-t ${borderColor}`}>
+            <div className="flex items-center justify-between">
+              <span className={`text-xs ${textMuted}`}>
+                لابراتوار درهمی © {new Date().getFullYear()}
+              </span>
+              <div className="flex items-center gap-1">
+                <Heart className={`w-3 h-3 ${isDark ? 'text-[#f44747]' : 'text-[#e51400]'}`} />
               </div>
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-8 px-4 sm:px-6 lg:px-8 border-t border-stone-200 dark:border-stone-800">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-brand-600 flex items-center justify-center">
-                <span className="text-white font-black text-sm">D</span>
-              </div>
-              <span className="font-bold text-stone-900 dark:text-stone-100">لابراتوار درهمی</span>
-            </div>
-            
-            <p className="text-sm text-stone-500 dark:text-stone-400">
-              © {new Date().getFullYear()} لابراتوار پروژه‌های درهمی
-            </p>
-          </div>
-        </div>
-      </footer>
-    </div>
-  )
-}
-
-interface ProjectCardProps {
-  title: string
-  titleEn: string
-  description: string
-  icon: React.ReactNode
-  features: string[]
-  href: string
-  github: string
-}
-
-function ProjectCard({ title, titleEn, description, icon, features, href, github }: ProjectCardProps) {
-  return (
-    <div className="p-8 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 hover:border-brand-400 dark:hover:border-brand-600 transition-all shadow-sm hover:shadow-lg group">
-      <div className="flex items-start gap-4 mb-6">
-        <div className="p-3 rounded-2xl bg-brand-100 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 border border-brand-200 dark:border-brand-800/50">
-          {icon}
-        </div>
-        <div>
-          <h3 className="text-xl font-black text-stone-900 dark:text-stone-100">
-            {title}
-          </h3>
-          <p className="text-sm text-stone-500 dark:text-stone-400 font-mono">
-            {titleEn}
-          </p>
-        </div>
       </div>
-      
-      <p className="text-stone-600 dark:text-stone-400 mb-6 leading-relaxed">
-        {description}
-      </p>
-      
-      <ul className="space-y-2 mb-6">
-        {features.map((feature, index) => (
-          <li key={index} className="flex items-center gap-2 text-sm text-stone-700 dark:text-stone-300">
-            <CheckSquare className="w-4 h-4 text-brand-500 shrink-0" />
-            {feature}
-          </li>
-        ))}
-      </ul>
-      
-      <div className="flex gap-3">
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold transition-colors shadow-sm shadow-brand-600/20"
-        >
-          <ExternalLink className="w-4 h-4" />
-          مشاهده
-        </a>
-        <a
-          href={github}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 text-sm font-medium transition-colors"
-        >
-          <GitBranch className="w-4 h-4" />
-          کد
-        </a>
-      </div>
-    </div>
-  )
-}
-
-interface FeatureCardProps {
-  icon: React.ReactNode
-  title: string
-  description: string
-}
-
-function FeatureCard({ icon, title, description }: FeatureCardProps) {
-  return (
-    <div className="p-6 rounded-2xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-700/50 hover:border-brand-300 dark:hover:border-brand-700 transition-colors">
-      <div className="w-12 h-12 rounded-xl bg-brand-100 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 flex items-center justify-center mb-4">
-        {icon}
-      </div>
-      <h3 className="font-bold text-stone-900 dark:text-stone-100 mb-2">
-        {title}
-      </h3>
-      <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
-        {description}
-      </p>
     </div>
   )
 }
