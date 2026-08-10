@@ -13,7 +13,8 @@ import {
   Braces,
   Rocket,
   Heart,
-  GitBranch
+  GitBranch,
+  BookOpen
 } from 'lucide-react'
 
 const GithubIcon = ({ className }: { className?: string }) => (
@@ -173,7 +174,7 @@ function App() {
               <div className="relative mt-auto pt-7">
                 <div className="grid grid-cols-4 gap-2.5 mb-5">
                   {[
-                    { v: '۴+', l: 'پروژه' },
+                    { v: '۵+', l: 'پروژه' },
                     { v: '۲۵۱+', l: 'قاعده' },
                     { v: '۱۰۰٪', l: 'متن‌باز' },
                     { v: '۰', l: 'تومان' }
@@ -380,6 +381,46 @@ function App() {
                       ))}
                     </div>
                   </div>
+                </div>
+              </GlowCard>
+            </a>
+          </motion.div>
+
+          {/* ══ Noun Wiki ══ */}
+          <motion.div variants={item} className="sm:col-span-2 lg:col-span-6">
+            <a href="https://wiki.nounproject.ir" target="_blank" className="block h-full group rounded-[2rem]">
+              <GlowCard
+                style={{ ['--glow-soft' as string]: isDark ? 'rgba(249,115,22,0.13)' : 'rgba(249,115,22,0.09)' }}
+                className="h-full rounded-[2rem] bg-card border border-line"
+              >
+                <div className="relative h-full flex flex-col sm:flex-row items-start sm:items-center gap-6 p-7">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-3 mb-2.5">
+                      <div className="inline-flex items-center justify-center w-11 h-11 rounded-2xl bg-card-2 border border-line text-orange-500">
+                        <BookOpen className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-black tracking-tight leading-none mb-1">نون ویکی</h4>
+                        <span className="text-[10px] text-ink-faint font-mono" dir="ltr">wiki.nounproject.ir</span>
+                      </div>
+                    </div>
+                    <p className="text-ink-soft text-[13px] leading-relaxed">
+                      دانشنامه اصطلاحات دنیای کار، کسب‌وکار، فناوری و مدیریت با جستجوی هوشمند فارسی
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    {['۱۴۰+ اصطلاح', 'جستجوی فازی', 'مقایسه اصطلاحات'].map((c) => (
+                      <span key={c} className="px-2.5 py-1.5 rounded-lg bg-card-2 border border-line text-[11px] font-bold text-ink-soft">
+                        {c}
+                      </span>
+                    ))}
+                  </div>
+
+                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-500 shrink-0">
+                    مشاهده پروژه
+                    <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </span>
                 </div>
               </GlowCard>
             </a>
