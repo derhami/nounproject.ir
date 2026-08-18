@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="یادداشت مارک‌داون - Markdown Notes">
+  <defs>
+    <linearGradient id="md-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1D2EA0"/>
+      <stop offset="100%" stop-color="#18298B"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="118" fill="url(#md-bg)"/>
+  <path d="M150 330 L205 246 L242 300 L282 232 L362 330" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M150 330 L150 378 L362 378 L362 330" fill="#ffffff"/>
+  <circle cx="396" cy="396" r="22" fill="#A3B5F5"/>
+</svg>

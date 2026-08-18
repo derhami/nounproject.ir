@@ -96,6 +96,16 @@ const PROJECTS: Project[] = [
     chips: ['۱۴۰+ اصطلاح', 'جستجوی هوشمند', 'مقایسه و مسیر یادگیری'],
     glowLight: 'rgba(245,158,11,0.1)',
     glowDark: 'rgba(245,158,11,0.15)'
+  },
+  {
+    logo: '/logos/markdown.svg',
+    title: 'یادداشت مارک‌داون',
+    titleEn: 'Markdown Notes',
+    domain: 'md.nounproject.ir',
+    desc: 'محیط نوشتاری حرفه‌ای و آفلاین مارک‌داون؛ همه‌ی داده‌ها روی خود دستگاه می‌ماند',
+    chips: ['۳ زبانه بومی', 'رمزنگاری AES-256', 'خروجی APK'],
+    glowLight: 'rgba(29,46,160,0.1)',
+    glowDark: 'rgba(163,181,245,0.15)'
   }
 ]
 
@@ -260,7 +270,7 @@ function App() {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5 mt-auto">
                   <div className="flex items-center gap-2.5 flex-wrap">
                     {[
-                      { v: '۵+', l: 'پروژه' },
+                      { v: '۶+', l: 'پروژه' },
                       { v: '۲۵۱+', l: 'قاعده سئو' },
                       { v: '۱۰۰٪', l: 'متن‌باز' },
                       { v: '۰', l: 'تومان' }
