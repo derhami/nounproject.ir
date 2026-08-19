@@ -4,20 +4,11 @@ import {
   Sun,
   Moon,
   Sparkles,
-  Zap,
   Rocket,
   ArrowLeft,
   ArrowUpRight,
-  Terminal,
-  Braces,
-  Heart
+  Terminal
 } from 'lucide-react'
-
-const GithubIcon = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-  </svg>
-)
 
 function useTilt() {
   const ref = useRef<HTMLDivElement>(null)
@@ -145,7 +136,7 @@ function ProjectCard({ project, isDark }: { project: Project; isDark: boolean })
     >
       <GlowCard
         style={{ ['--glow-soft' as string]: isDark ? project.glowDark : project.glowLight }}
-        className="h-full rounded-[2rem] bg-card border border-line transition-all duration-300 group-hover:border-line-strong group-hover:-translate-y-1"
+        className="h-full rounded-[2rem] bg-card/70 backdrop-blur-xl border border-line transition-all duration-300 group-hover:border-line-strong group-hover:-translate-y-1"
       >
         <div className="relative h-full flex flex-col p-6">
           <div className="flex items-center justify-between mb-5">
@@ -229,14 +220,14 @@ function App() {
           <motion.div variants={item} className="sm:col-span-2 lg:col-span-6">
             <GlowCard
               style={{ ['--glow-soft' as string]: isDark ? 'rgba(163,181,245,0.12)' : 'rgba(29,46,160,0.08)' }}
-              className="group h-full rounded-[2rem] bg-card border border-line"
+              className="group h-full rounded-[2rem] bg-card/70 backdrop-blur-xl border border-line"
             >
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-accent/60 to-transparent" />
 
-              <div className="relative h-full flex flex-col p-7 sm:p-9">
-                <div className="flex items-center justify-between mb-7">
+              <div className="relative h-full flex flex-col p-6 sm:p-7">
+                <div className="flex items-center justify-between mb-5">
                   <div className="flex items-center gap-3">
-                    <img src="/logos/lab.svg" alt="Derhami Lab" className="w-11 h-11 rounded-2xl shadow-sm" />
+                    <img src="/logos/lab.svg" alt="Derhami Lab" className="w-10 h-10 rounded-2xl shadow-sm" />
                     <div>
                       <div className="font-black text-base tracking-tight">لابراتوار درهمی</div>
                       <div className="text-[11px] text-ink-faint font-medium" dir="ltr">Derhami Lab · Digital Team</div>
@@ -251,43 +242,19 @@ function App() {
                   </button>
                 </div>
 
-                <div>
-                  <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-accent-soft text-accent text-xs font-bold mb-4">
-                    <Sparkles className="w-3.5 h-3.5" />
-                    مجموعه ابزارهای حرفه‌ای وب فارسی
-                  </div>
-                  <h1 className="text-3xl sm:text-4xl lg:text-[2.6rem] font-black tracking-tighter leading-[1.15] mb-4">
-                    <span className="block bg-gradient-to-l from-ink via-ink-soft to-ink-faint bg-clip-text text-transparent">
-                      ابزارهای متن‌باز و رایگان
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 my-auto">
+                  <h1 className="text-2xl sm:text-[1.7rem] font-black tracking-tighter leading-tight">
+                    <span className="bg-gradient-to-l from-ink via-ink-soft to-ink-faint bg-clip-text text-transparent">
+                      ابزارهای متن‌باز و رایگان وب فارسی
                     </span>
-                    <span className="block text-ink">برای وب فارسی</span>
                   </h1>
-                  <p className="text-ink-soft text-sm leading-relaxed max-w-lg mb-5">
-                    محصولات تیم دیجیتال درهمی برای توسعه‌دهندگان؛ از ویرایش متن فارسی تا سئوی حرفه‌ای سایت.
-                  </p>
-                </div>
 
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5 mt-auto">
-                  <div className="flex items-center gap-2.5 flex-wrap">
-                    {[
-                      { v: '۶+', l: 'پروژه' },
-                      { v: '۲۵۱+', l: 'قاعده سئو' },
-                      { v: '۱۰۰٪', l: 'متن‌باز' },
-                      { v: '۰', l: 'تومان' }
-                    ].map((s) => (
-                      <span key={s.l} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-card-2 border border-line">
-                        <span className="text-sm font-black tracking-tight">{s.v}</span>
-                        <span className="text-[10px] text-ink-faint font-medium">{s.l}</span>
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="flex items-center gap-2.5 mt-3 sm:mt-0 sm:mr-auto">
+<div className="flex items-center gap-2.5 mt-1 sm:mt-0 sm:me-2">
                     <a
                       href="https://derhami.com"
                       target="_blank"
                       rel="noreferrer"
-                      className="group inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-ink text-card font-bold text-sm hover:opacity-90 transition-all duration-300"
+                      className="group inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-ink text-card font-bold text-sm hover:opacity-90 transition-all duration-300"
                     >
                       <Rocket className="w-4 h-4" />
                       وبسایت درهمی
@@ -297,7 +264,7 @@ function App() {
                       href="https://github.com/derhami"
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-card-2 border border-line-strong text-sm font-bold hover:bg-accent-soft transition-all duration-300"
+                      className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-card-2 border border-line-strong text-sm font-bold hover:bg-accent-soft transition-all duration-300"
                     >
                       <Terminal className="w-4 h-4" />
                       گیت‌هاب
@@ -320,59 +287,6 @@ function App() {
               <ProjectCard project={p} isDark={isDark} />
             </motion.div>
           ))}
-
-          {/* ══ About ══ */}
-          <motion.div variants={item} className="sm:col-span-1 lg:col-span-2">
-            <GlowCard
-              style={{ ['--glow-soft' as string]: isDark ? 'rgba(163,181,245,0.12)' : 'rgba(29,46,160,0.08)' }}
-              className="group h-full rounded-[2rem] bg-card border border-line"
-            >
-              <div className="relative h-full flex flex-col p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-accent-soft text-accent">
-                    <Braces className="w-5 h-5" />
-                  </div>
-                  <h4 className="text-base font-black">چرا متن‌باز؟</h4>
-                </div>
-                <p className="text-ink-soft text-[13px] leading-relaxed">
-                  ابزارهای خوب باید در دسترس همه‌ی توسعه‌دهندگان وب فارسی باشند؛ به همین دلیل تمام پروژه‌ها متن‌باز و رایگان منتشر می‌شوند.
-                </p>
-                <div className="flex items-center gap-2 pt-4 mt-auto border-t border-line">
-                  <Heart className="w-3.5 h-3.5 text-accent" />
-                  <span className="text-[11px] text-ink-faint">ساخته شده توسط تیم درهمی</span>
-                </div>
-              </div>
-            </GlowCard>
-          </motion.div>
-
-          {/* ══ GitHub CTA ══ */}
-          <motion.div variants={item} className="sm:col-span-2 lg:col-span-6">
-            <GlowCard
-              style={{ ['--glow-soft' as string]: isDark ? 'rgba(163,181,245,0.12)' : 'rgba(29,46,160,0.08)' }}
-              className="group h-full rounded-[2rem] bg-card border border-line"
-            >
-              <div className="relative h-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-6">
-                <div className="flex items-center gap-3">
-                  <div className="inline-flex items-center justify-center w-11 h-11 rounded-2xl bg-accent-soft text-accent transition-transform duration-300 group-hover:scale-110">
-                    <GithubIcon className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="font-black text-sm mb-0.5">کد منبع همه‌ی پروژه‌ها</div>
-                    <div className="text-[12px] text-ink-faint" dir="ltr">github.com/derhami</div>
-                  </div>
-                </div>
-                <a
-                  href="https://github.com/derhami"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-accent-soft text-accent text-xs font-bold hover:gap-3 transition-all duration-300"
-                >
-                  <Zap className="w-3.5 h-3.5" />
-                  باز کردن گیت‌هاب
-                </a>
-              </div>
-            </GlowCard>
-          </motion.div>
         </motion.div>
       </div>
     </div>
