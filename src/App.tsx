@@ -44,8 +44,8 @@ const PROJECTS: Project[] = [
     domain: 'ranko.nounproject.ir',
     desc: 'ابزار حرفه‌ای سئو و بهینه‌سازی سایت با ۲۵۱ قاعده در ۲۰ دسته',
     chips: ['۲۵۱ قاعده', 'Core Web Vitals', 'AI Ready'],
-    glowLight: 'rgba(245,158,11,0.1)',
-    glowDark: 'rgba(245,158,11,0.15)',
+    glowLight: 'rgba(255,141,100,0.12)',
+    glowDark: 'rgba(255,141,100,0.16)',
     badge: 'پروژه ویژه'
   },
   {
@@ -55,8 +55,8 @@ const PROJECTS: Project[] = [
     domain: 'virastar.nounproject.ir',
     desc: 'ویرایش هوشمند متن فارسی و اصلاح خودکار نیم‌فاصله',
     chips: ['نیم‌فاصله', 'اعداد فارسی', 'تحلیل خوانایی'],
-    glowLight: 'rgba(139,92,246,0.1)',
-    glowDark: 'rgba(139,92,246,0.15)'
+    glowLight: 'rgba(253,209,76,0.12)',
+    glowDark: 'rgba(253,209,76,0.16)'
   },
   {
     logo: '/logos/checklist.svg',
@@ -65,8 +65,8 @@ const PROJECTS: Project[] = [
     domain: 'checklist.nounproject.ir',
     desc: 'مرجع تخصصی UI/UX با بیش از ۲۰۰ آیتم قابل بررسی',
     chips: ['۲۰۰+ آیتم', 'نمودار راداری', 'خروجی PDF'],
-    glowLight: 'rgba(16,185,129,0.1)',
-    glowDark: 'rgba(16,185,129,0.15)'
+    glowLight: 'rgba(165,110,255,0.12)',
+    glowDark: 'rgba(165,110,255,0.16)'
   },
   {
     logo: '/logos/tailwind.svg',
@@ -75,8 +75,8 @@ const PROJECTS: Project[] = [
     domain: 'tailwind.nounproject.ir',
     desc: 'مرجع بصری تعاملی برای یادگیری سریع Tailwind CSS',
     chips: ['مقایسه کلاس‌ها', 'شبیه‌ساز Breakpoint', 'پالت رنگی'],
-    glowLight: 'rgba(14,165,233,0.1)',
-    glowDark: 'rgba(14,165,233,0.15)'
+    glowLight: 'rgba(58,133,255,0.12)',
+    glowDark: 'rgba(58,133,255,0.16)'
   },
   {
     logo: '/logos/wiki.svg',
@@ -85,8 +85,8 @@ const PROJECTS: Project[] = [
     domain: 'wiki.nounproject.ir',
     desc: 'دانشنامه اصطلاحات دنیای کار، کسب‌وکار، فناوری و مدیریت',
     chips: ['۱۴۰+ اصطلاح', 'جستجوی هوشمند', 'مقایسه و مسیر یادگیری'],
-    glowLight: 'rgba(245,158,11,0.1)',
-    glowDark: 'rgba(245,158,11,0.15)'
+    glowLight: 'rgba(246,78,78,0.12)',
+    glowDark: 'rgba(246,78,78,0.16)'
   },
   {
     logo: '/logos/markdown.svg',
@@ -95,8 +95,8 @@ const PROJECTS: Project[] = [
     domain: 'md.nounproject.ir',
     desc: 'محیط نوشتاری حرفه‌ای و آفلاین مارک‌داون؛ همه‌ی داده‌ها روی خود دستگاه می‌ماند',
     chips: ['۳ زبانه بومی', 'رمزنگاری AES-256', 'خروجی APK'],
-    glowLight: 'rgba(29,46,160,0.1)',
-    glowDark: 'rgba(163,181,245,0.15)'
+    glowLight: 'rgba(115,228,154,0.12)',
+    glowDark: 'rgba(115,228,154,0.16)'
   }
 ]
 
@@ -219,7 +219,7 @@ function App() {
           {/* ══ Brand — hero ══ */}
           <motion.div variants={item} className="sm:col-span-2 lg:col-span-6">
             <GlowCard
-              style={{ ['--glow-soft' as string]: isDark ? 'rgba(163,181,245,0.12)' : 'rgba(29,46,160,0.08)' }}
+              style={{ ['--glow-soft' as string]: isDark ? 'rgba(26,188,254,0.14)' : 'rgba(26,188,254,0.10)' }}
               className="group h-full rounded-[2rem] bg-card/70 backdrop-blur-xl border border-line"
             >
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-accent/60 to-transparent" />

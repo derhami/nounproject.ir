@@ -1,14 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="لابراتوار درهمی - Derhami Lab">
-  <defs>
-    <linearGradient id="lab-bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#27272a"/>
-      <stop offset="100%" stop-color="#18181b"/>
-    </linearGradient>
-  </defs>
-  <rect width="512" height="512" rx="118" fill="url(#lab-bg)"/>
-  <g stroke="#ffffff" stroke-width="52" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <line x1="166" y1="166" x2="166" y2="346"/>
-    <line x1="166" y1="346" x2="344" y2="346"/>
-  </g>
-  <circle cx="392" cy="392" r="22" fill="#4d63d5"/>
+<svg width="1254" height="1254" viewBox="0 0 1254 1254" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="1254" height="1254" rx="300" fill="url(#paint0_linear_2550_17148)"/>
+<path d="M581.41 290V558.747L578.137 562H523.391L520.117 558.747V344.4H349.293C348.278 348.401 347.337 352.065 346.998 356.252C342.859 408.446 345.455 479.335 346.998 532.725C347.299 542.483 353.282 554.522 346.02 562H291.274L288 558.747V290H581.448H581.41Z" fill="white"/>
+<path d="M730.819 290V504.347C732.738 507.451 735.183 507.338 738.382 507.712C776.761 512.199 839.183 507.937 878.69 505.432C887.758 504.871 896.977 505.768 906.045 505.432V290H965.156V562H674.981L671.708 558.747V290H730.819Z" fill="white"/>
+<path d="M442.307 628.06L632.34 818.093L632.325 822.707L427.141 1027.89L234.808 835.559L442.307 628.06ZM437.433 709.867L315.099 832.201L430.499 947.601L552.833 825.267L437.433 709.867Z" fill="#1ABCFE"/>
+<path d="M965.118 691.973V960.72L961.845 963.973H907.098L903.825 960.72V746.373H733.001C731.985 750.373 731.045 754.037 730.706 758.225C726.567 810.419 729.163 881.307 730.706 934.698C731.007 944.456 736.99 956.495 729.728 963.973H674.981L671.708 960.72V691.973H965.156H965.118Z" fill="white"/>
+<defs>
+<linearGradient id="paint0_linear_2550_17148" x1="627" y1="0" x2="627" y2="1254" gradientUnits="userSpaceOnUse">
+<stop stop-color="#252528"/>
+<stop offset="1" stop-color="#18181B"/>
+</linearGradient>
+</defs>
 </svg>
